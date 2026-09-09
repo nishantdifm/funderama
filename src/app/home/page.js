@@ -1,7 +1,10 @@
 "use client";
 
+import { useState } from "react";
+import Link from "next/link";
 import Header from "@/components/Header/Header";
 import Footer from "@/components/Footer/Footer";
+import ReCaptcha from "@/components/Common/ReCaptcha";
 import { Banknote, BriefcaseBusiness, Phone } from "lucide-react";
 
 const assets = {
@@ -12,21 +15,93 @@ const assets = {
 };
 
 const services = [
-  { title: "Quick Financing", href: "#financing", Icon: Banknote },
-  { title: "SBA Loans", href: "#sba", Icon: BriefcaseBusiness },
+  { title: "Quick Financing", href: "/quick-financing", Icon: Banknote },
+  { title: "SBA Loans", href: "/sba-loans", Icon: BriefcaseBusiness },
 ];
 
 function HeroSection() {
+  const scrollToContact = (e) => {
+    e?.preventDefault?.();
+    const el = document.getElementById("contact");
+    if (el) {
+      const header = document.querySelector("header");
+      const headerHeight = header ? header.offsetHeight : 120;
+      const elementPosition = el.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - headerHeight;
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth",
+      });
+    }
+  };
+
   return (
     <section className="relative isolate min-h-[650px] overflow-hidden bg-[linear-gradient(160deg,#e4f7ff_0%,#e8f8ff_43.5%,white_43.6%)] sm:min-h-[736px]">
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_42%_70%_at_-7%_76%,#e2f6fe_0_50%,transparent_50.4%),linear-gradient(62deg,transparent_0_70%,rgba(209,241,252,.6)_70.1%)]" />
-      <div className="mx-auto grid min-h-[650px] w-[calc(100%-30px)] max-w-[1304px] grid-cols-1 items-center py-20 sm:min-h-[736px] sm:w-[calc(100%-48px)] lg:grid-cols-[45%_55%] lg:py-0">
-        <div className="max-w-[580px]">
-          <p className="mb-[28px] font-['Rubik',sans-serif] text-[24px] font-normal tracking-[-0.4px] text-black sm:text-[32px]">welcome to FunderamaLLC</p>
-          <h1 className="mb-[28px] font-['Rubik',sans-serif] text-[40px] font-semibold leading-[1.18] tracking-[0.1px] text-[#183059] sm:text-[48px]">Customer-centric<br />lending solutions</h1>
-          <p className="m-0 mb-[36px] text-justify text-base leading-[1.6] tracking-[0.1px] text-[#5d7788] sm:text-[18px]">At FunderamaLLC, our focus is towards the customers gaining an upper hand on business financing deals. Making the right choices and being able to get the right kind of merchant cash advance or an SBA loan. Unlike other lenders and brokers, we focus on our clients benefits when it comes to offering the right lending solution. Our customers are provided with the custom loan solutions that can be altered as per their business needs.</p>
-          <a className="inline-flex min-h-[56px] items-center rounded-[5px] bg-[#192f5a] px-[27px] text-base font-bold text-white no-underline transition hover:-translate-y-0.5 hover:bg-[#24427c]" href="#contact">Make an appointment</a>
+      <div className="mx-auto grid min-h-[650px] w-[calc(100%-30px)] max-w-[1304px] grid-cols-1 items-center gap-10 py-12 sm:min-h-[736px] sm:w-[calc(100%-48px)] sm:py-20 lg:grid-cols-[45%_55%] lg:gap-0 lg:py-0">
+        <div className="max-w-[580px] text-left">
+          <p className="mb-3 font-['Rubik',sans-serif] text-[22px] font-normal leading-[1.3] text-[#293039] sm:mb-4 sm:text-[32px]">
+            welcome to FunderamaLLC
+          </p>
+          <h1 className="mb-4 font-['Rubik',sans-serif] text-[36px] font-bold leading-[1.17] tracking-[0.1px] text-[#1d3968] sm:mb-6 sm:text-[54px]">
+            Customer-centric <br />
+            lending solutions
+          </h1>
+          <p className="mb-8 text-justify text-[15px] leading-[1.6] tracking-[0.1px] text-[#5d7788] sm:text-[18px]">
+            At FunderamaLLC, our focus is towards the customers gaining an upper
+            hand on business financing deals. Making the right choices and being
+            able to get the right kind of merchant cash advance or an SBA loan.
+            Unlike other lenders and brokers, we focus on our clients benefits
+            when it comes to offering the right lending solution. Our customers
+            are provided with the custom loan solutions that can be altered as per
+            their business needs.
+          </p>
+          <div className="flex justify-start">
+            <button
+              type="button"
+              onClick={scrollToContact}
+              className="inline-flex min-h-[50px] cursor-pointer items-center justify-center rounded-[4px] bg-[#183059] px-7 py-3 text-base font-semibold text-white transition hover:bg-[#22447d] active:scale-[0.99]"
+            >
+              Make an appointment
+            </button>
+          </div>
         </div>
+
+        {/* Mobile & iPad Hero Image */}
+        <div className="relative flex w-full items-center justify-center overflow-visible py-4 sm:py-8 lg:hidden">
+          <div className="relative h-[280px] w-[280px] sm:h-[380px] sm:w-[380px] md:h-[420px] md:w-[420px]">
+            {/* Light blue background blob (top-left) */}
+            <img
+              className="pointer-events-none absolute inset-0 z-[1] h-full w-full origin-center opacity-30 [transform:translate(-15%,-12%)_scale(0.70)]"
+              src={assets.blueShape}
+              alt=""
+            />
+            {/* Clipped photo */}
+            <img
+              className="absolute inset-0 z-[2] h-full w-full object-cover"
+              src={assets.heroImage}
+              alt="Customer-centric lending solutions"
+              style={{
+                WebkitMaskImage: `url(${assets.imageMask})`,
+                WebkitMaskPosition: "center",
+                WebkitMaskRepeat: "no-repeat",
+                WebkitMaskSize: "contain",
+                maskImage: `url(${assets.imageMask})`,
+                maskPosition: "center",
+                maskRepeat: "no-repeat",
+                maskSize: "contain",
+              }}
+            />
+            {/* Dark accent blob (bottom-right) */}
+            <img
+              className="pointer-events-none absolute inset-0 z-[3] h-full w-full origin-center opacity-55 [transform:translate(30%,22%)_scale(0.25)]"
+              src={assets.accentShape}
+              alt=""
+            />
+          </div>
+        </div>
+
+        {/* Desktop Original Hero Image */}
         <div className="relative hidden h-[675px] overflow-visible lg:block">
           <img className="absolute left-0 top-0 z-[1] w-[1000px] origin-center opacity-25 [transform:translate(-20%,-11%)_scale(.6)]" src={assets.blueShape} alt="" />
           <img className="absolute right-[-10px] top-[18px] z-[2] h-[680px] w-[680px] object-cover [transform:translateX(4%)_scale(.9)]" src={assets.heroImage} alt="Business owner holding a tablet" style={{ WebkitMaskImage: `url(${assets.imageMask})`, WebkitMaskPosition: "center", WebkitMaskRepeat: "no-repeat", WebkitMaskSize: "contain", maskImage: `url(${assets.imageMask})`, maskPosition: "center", maskRepeat: "no-repeat", maskSize: "contain" }} />
@@ -44,10 +119,10 @@ function ServicesSection() {
         <h2 className="mb-[62px] text-center text-[36px] font-semibold leading-tight text-[#1d3968]">Our Services</h2>
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-2">
           {services.map((service) => (
-            <a className="flex min-h-[400px] flex-col items-center justify-center rounded-lg bg-white px-8 shadow-[0_0_20px_rgba(20,47,126,.13)] transition hover:-translate-y-1 hover:shadow-[0_12px_32px_rgba(20,47,126,.18)]" href={service.href} key={service.title}>
+            <Link className="flex min-h-[400px] flex-col items-center justify-center rounded-lg bg-white px-8 shadow-[0_0_20px_rgba(20,47,126,.13)] transition hover:-translate-y-1 hover:shadow-[0_12px_32px_rgba(20,47,126,.18)]" href={service.href} key={service.title}>
               <service.Icon className="h-10 w-10 text-[#1d3968]" strokeWidth={2.5} aria-hidden="true" />
               <h3 className="mt-8 text-[32px] font-normal text-[#293039]">{service.title}</h3>
-            </a>
+            </Link>
           ))}
         </div>
       </div>
@@ -64,17 +139,17 @@ const mottoAssets = {
 
 function MottoSection() {
   return (
-    <section className="bg-white px-4 pb-20 pt-6 sm:px-6 sm:pb-28 sm:pt-10">
+    <section className="bg-white px-4 pb-16 pt-4 sm:px-6 sm:pb-28 sm:pt-10">
       <div className="mx-auto grid max-w-[1304px] grid-cols-1 items-center gap-8 lg:grid-cols-2 lg:gap-10 xl:gap-12">
-        <div className="max-w-[560px]">
-          <h3 className="m-0 mb-4 font-['Rubik',sans-serif] text-[28px] font-normal leading-[1.3] text-black sm:text-[36px] sm:leading-[46.8px]">
+        <div className="order-2 mx-auto max-w-[560px] text-center lg:order-1 lg:mx-0 lg:text-left">
+          <h3 className="m-0 mb-3 font-['Rubik',sans-serif] text-[24px] font-normal leading-[1.3] text-black sm:mb-4 sm:text-[36px] sm:leading-[46.8px]">
             Our motto
           </h3>
-          <h2 className="mb-6 font-['Rubik',sans-serif] text-[36px] font-bold leading-[1.17] tracking-[0.1px] text-[#1d3968] sm:text-[46px]">
+          <h2 className="mb-5 font-['Rubik',sans-serif] text-[30px] font-bold leading-[1.17] tracking-[0.1px] text-[#1d3968] sm:mb-6 sm:text-[46px]">
             every BIG business <br />
             starts SMALL
           </h2>
-          <p className="m-0 text-justify text-base leading-[1.6] tracking-[0.1px] text-[#5d7788] sm:text-[18px]">
+          <p className="m-0 text-justify text-[15px] leading-[1.6] tracking-[0.1px] text-[#5d7788] sm:text-[18px]">
             At FunderamaLLC, we are focused towards providing each small and medium
             sized business the boost that they may need to expand their existing
             business. Whether is (it) be an (a) cash flow problem, payroll problem,
@@ -85,13 +160,13 @@ function MottoSection() {
           </p>
         </div>
 
-        <div className="relative flex min-h-[380px] w-full items-center justify-center overflow-visible sm:min-h-[480px] lg:min-h-[600px]">
-          <div className="relative h-[340px] w-[340px] sm:h-[480px] sm:w-[480px] lg:h-[580px] lg:w-[580px]">
-            {/* Light blue background blob */}
+        <div className="order-1 relative flex w-full items-center justify-center overflow-visible py-4 sm:py-6 lg:order-2 lg:min-h-[600px] lg:py-0">
+          <div className="relative h-[280px] w-[280px] sm:h-[380px] sm:w-[380px] md:h-[420px] md:w-[420px] lg:h-[580px] lg:w-[580px]">
+            {/* Light blue background blob (top-left) */}
             <img
               src={mottoAssets.blueShape}
               alt=""
-              className="pointer-events-none absolute inset-0 z-[1] h-full w-full origin-center opacity-30 [transform:translate(-12%,-14%)_scale(0.85)]"
+              className="pointer-events-none absolute inset-0 z-[1] h-full w-full origin-center opacity-30 [transform:translate(-15%,-12%)_scale(0.70)] lg:[transform:translate(-12%,-14%)_scale(0.85)]"
             />
             {/* Clipped photo */}
             <img
@@ -109,11 +184,11 @@ function MottoSection() {
                 maskSize: "contain",
               }}
             />
-            {/* Foreground dark slate-blue accent blob */}
+            {/* Foreground dark slate-blue accent blob (bottom-right) */}
             <img
               src={mottoAssets.accentShape}
               alt=""
-              className="pointer-events-none absolute inset-0 z-[3] h-full w-full origin-center opacity-55 [transform:translate(22%,26%)_scale(0.36)]"
+              className="pointer-events-none absolute inset-0 z-[3] h-full w-full origin-center opacity-55 [transform:translate(24%,28%)_scale(0.25)] lg:[transform:translate(22%,26%)_scale(0.36)]"
             />
           </div>
         </div>
@@ -130,17 +205,31 @@ const contactAssets = {
 };
 
 function ContactSection() {
+  const [submitted, setSubmitted] = useState(false);
+  const [captchaToken, setCaptchaToken] = useState(null);
+  const [captchaError, setCaptchaError] = useState("");
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!captchaToken) {
+      setCaptchaError("Please verify that you are not a robot.");
+      return;
+    }
+    setCaptchaError("");
+    setSubmitted(true);
+  };
+
   return (
-    <section id="contact" className="bg-white px-4 py-16 sm:px-6 sm:py-24">
+    <section id="contact" className="scroll-mt-[94px] bg-white px-4 py-12 sm:scroll-mt-[120px] sm:px-6 sm:py-24">
       <div className="mx-auto grid max-w-[1304px] grid-cols-1 items-center gap-8 lg:grid-cols-2 lg:gap-16 xl:gap-20">
         {/* Left Column: Masked Image & Blobs */}
-        <div className="relative flex min-h-[380px] w-full items-center justify-center overflow-visible sm:min-h-[480px] lg:min-h-[580px]">
-          <div className="relative h-[340px] w-[340px] sm:h-[460px] sm:w-[460px] lg:h-[540px] lg:w-[540px]">
+        <div className="relative flex w-full items-center justify-center overflow-visible py-4 sm:py-6 lg:min-h-[580px] lg:py-0">
+          <div className="relative h-[280px] w-[280px] sm:h-[380px] sm:w-[380px] md:h-[420px] md:w-[420px] lg:h-[540px] lg:w-[540px]">
             {/* Light blue background blob (top-right) */}
             <img
               src={contactAssets.blueShape}
               alt=""
-              className="pointer-events-none absolute inset-0 z-[1] h-full w-full origin-center opacity-30 [transform:translate(10%,-15%)_scale(0.85)]"
+              className="pointer-events-none absolute inset-0 z-[1] h-full w-full origin-center opacity-30 [transform:translate(14%,-14%)_scale(0.68)] lg:[transform:translate(10%,-15%)_scale(0.85)]"
             />
             {/* Clipped photo */}
             <img
@@ -162,59 +251,96 @@ function ContactSection() {
             <img
               src={contactAssets.accentShape}
               alt=""
-              className="pointer-events-none absolute inset-0 z-[3] h-full w-full origin-center opacity-55 [transform:translate(-30%,26%)_scale(0.36)]"
+              className="pointer-events-none absolute inset-0 z-[3] h-full w-full origin-center opacity-55 [transform:translate(-32%,32%)_scale(0.25)] lg:[transform:translate(-30%,26%)_scale(0.36)]"
             />
           </div>
         </div>
 
         {/* Right Column: Heading & Form */}
-        <div className="mx-auto w-full max-w-[540px] lg:mx-0 lg:pl-6">
-          <h2 className="mb-8 font-['Rubik',sans-serif] text-[30px] font-medium leading-[1.3] text-[#183059] sm:text-[36px]">
+        <div className="mx-auto w-full max-w-[540px] lg:mx-0 lg:max-w-none lg:pl-6">
+          <h2 className="mb-8 text-center font-['Rubik',sans-serif] text-[28px] font-medium leading-[1.3] text-[#183059] sm:text-[36px] lg:text-left">
             Feel Free to Contact Us with<br />Any Questions
           </h2>
 
-          <form onSubmit={(e) => e.preventDefault()} className="space-y-5">
-            <div>
-              <label
-                htmlFor="contact-name"
-                className="mb-2 block text-sm font-normal text-[#293039]"
+          {submitted ? (
+            <div className="rounded-[8px] border border-green-200 bg-green-50 p-7 text-center">
+              <h3 className="font-['Rubik',sans-serif] text-[19px] font-medium text-green-800">
+                Thank you!
+              </h3>
+              <p className="mt-2 text-[14px] text-green-700">
+                Your request has been received. Our representative will call you back shortly.
+              </p>
+              <button
+                type="button"
+                onClick={() => {
+                  setSubmitted(false);
+                  setCaptchaToken(null);
+                }}
+                className="mt-5 inline-block cursor-pointer rounded-[4px] bg-[#183059] px-6 py-2.5 text-sm font-medium text-white transition hover:bg-[#233f75]"
               >
-                Name <span className="text-[#e11d48]">*</span>
-              </label>
-              <input
-                type="text"
-                id="contact-name"
-                name="name"
-                required
-                className="w-full rounded-[4px] border border-[#d6dee5] bg-[#fcfdfe] px-4 py-3 text-[15px] text-[#111827] outline-none transition focus:border-[#183059] focus:bg-white"
-              />
+                Request another call-back
+              </button>
             </div>
+          ) : (
+            <form onSubmit={handleSubmit} className="space-y-5">
+              <div>
+                <label
+                  htmlFor="contact-name"
+                  className="mb-2 block text-sm font-normal text-[#293039]"
+                >
+                  Name <span className="text-[#e11d48]">*</span>
+                </label>
+                <input
+                  type="text"
+                  id="contact-name"
+                  name="name"
+                  required
+                  className="w-full rounded-[4px] border border-[#d6dee5] bg-[#fcfdfe] px-4 py-3 text-[15px] text-[#111827] outline-none transition focus:border-[#183059] focus:bg-white"
+                />
+              </div>
 
-            <div>
-              <label
-                htmlFor="contact-phone"
-                className="mb-2 block text-sm font-normal text-[#293039]"
+              <div>
+                <label
+                  htmlFor="contact-phone"
+                  className="mb-2 block text-sm font-normal text-[#293039]"
+                >
+                  Phone number <span className="text-[#e11d48]">*</span>
+                </label>
+                <input
+                  type="tel"
+                  id="contact-phone"
+                  name="phone"
+                  required
+                  pattern="[0-9()#+*\-=. ]+"
+                  className="w-full rounded-[4px] border border-[#d6dee5] bg-[#fcfdfe] px-4 py-3 text-[15px] text-[#111827] outline-none transition focus:border-[#183059] focus:bg-white"
+                />
+              </div>
+
+              {/* reCAPTCHA */}
+              <div>
+                <ReCaptcha
+                  onChange={(token) => {
+                    setCaptchaToken(token);
+                    if (token) setCaptchaError("");
+                  }}
+                  onExpired={() => setCaptchaToken(null)}
+                />
+                {captchaError && (
+                  <p className="mt-1 text-sm font-medium text-red-600">
+                    {captchaError}
+                  </p>
+                )}
+              </div>
+
+              <button
+                type="submit"
+                className="flex min-h-[50px] w-full items-center justify-center gap-3 rounded-[4px] bg-[#192f5a] px-6 py-3.5 text-base font-medium text-white transition hover:bg-[#233f75] active:scale-[0.99]"
               >
-                Phone number <span className="text-[#e11d48]">*</span>
-              </label>
-              <input
-                type="tel"
-                id="contact-phone"
-                name="phone"
-                required
-                pattern="[0-9()#+*\-=. ]+"
-                className="w-full rounded-[4px] border border-[#d6dee5] bg-[#fcfdfe] px-4 py-3 text-[15px] text-[#111827] outline-none transition focus:border-[#183059] focus:bg-white"
-              />
-            </div>
-
-            <button
-              type="submit"
-              className="flex min-h-[50px] w-full items-center justify-center gap-3 rounded-[4px] bg-[#192f5a] px-6 py-3.5 text-base font-medium text-white transition hover:bg-[#233f75] active:scale-[0.99]"
-            >
-              <Phone className="h-4 w-4 fill-white stroke-none" />
-              <span>Request a call-back</span>
-            </button>
-          </form>
+                <Phone className="h-4 w-4 fill-white stroke-none" />
+                <span>Request a call-back</span>
+              </button>
+            </form>
+          )}
         </div>
       </div>
     </section>
@@ -239,12 +365,12 @@ function WhyChooseSection() {
         </div>
 
         <div className="flex justify-center">
-          <a
-            href="#contact"
-            className="inline-flex min-h-[52px] items-center justify-center rounded-[5px] bg-[#192f5a] px-8 py-3.5 text-base font-bold text-white no-underline transition hover:-translate-y-0.5 hover:bg-[#233f75] active:scale-[0.99]"
+          <Link
+            href="/contact"
+            className="inline-flex min-h-[52px] cursor-pointer items-center justify-center rounded-[5px] bg-[#192f5a] px-8 py-3.5 text-base font-bold text-white no-underline transition hover:-translate-y-0.5 hover:bg-[#233f75] active:scale-[0.99]"
           >
             Apply for Funding Today
-          </a>
+          </Link>
         </div>
       </div>
     </section>
@@ -253,14 +379,16 @@ function WhyChooseSection() {
 
 export default function HomePage() {
   return (
-    <main id="home">
+    <>
       <Header />
-      <HeroSection />
-      <ServicesSection />
-      <MottoSection />
-      <ContactSection />
-      <WhyChooseSection />
+      <main id="home" className="overflow-x-hidden">
+        <HeroSection />
+        <ServicesSection />
+        <MottoSection />
+        <ContactSection />
+        <WhyChooseSection />
+      </main>
       <Footer />
-    </main>
+    </>
   );
 }

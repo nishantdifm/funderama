@@ -2,24 +2,20 @@
 
 import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
-import HomePage from "./home/page";
 import SearchResultsPage from "@/components/Search/SearchResultsPage";
 
-function PageSwitcher() {
+function SearchContent() {
   const searchParams = useSearchParams();
-  const s = searchParams.get("s");
+  const query = searchParams.get("s") ?? "";
 
-  if (s !== null) {
-    return <SearchResultsPage query={s} />;
-  }
-
-  return <HomePage />;
+  return <SearchResultsPage query={query} />;
 }
 
-export default function RootPage() {
+export default function SearchRoute() {
   return (
     <Suspense fallback={<div className="min-h-screen bg-white" />}>
-      <PageSwitcher />
+      <SearchContent />
     </Suspense>
   );
 }
+
