@@ -1,13 +1,20 @@
 "use client";
 
-import { Suspense } from "react";
-import { useSearchParams } from "next/navigation";
+import { Suspense, useEffect } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 import HomePage from "./home/page";
 import SearchResultsPage from "@/components/Search/SearchResultsPage";
 
 function PageSwitcher() {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const s = searchParams.get("s");
+
+  useEffect(() => {
+    if (s !== null) {
+      router.replace(`/search?s=${encodeURIComponent(s)}`);
+    }
+  }, [s, router]);
 
   if (s !== null) {
     return <SearchResultsPage query={s} />;

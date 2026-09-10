@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import Link from "next/link";
 import Header from "@/components/Header/Header";
 import Footer from "@/components/Footer/Footer";
@@ -7,6 +8,10 @@ import { searchSite } from "@/data/searchData";
 
 export default function SearchResultsPage({ query = "" }) {
   const results = searchSite(query);
+
+  useEffect(() => {
+    document.title = "Search Results | Funderama";
+  }, []);
 
   return (
     <main className="min-h-screen bg-white">

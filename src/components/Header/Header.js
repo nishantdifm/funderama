@@ -4,6 +4,7 @@ import { useState, useEffect, useRef, Suspense } from "react";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { X, Menu } from "lucide-react";
+import globalInfo from "@/data/globalInfo";
 
 function SearchBar() {
   const searchParams = useSearchParams();
@@ -27,7 +28,7 @@ function SearchBar() {
       el.style.visibility = "visible";
       el.style.pointerEvents = "auto";
     }
-    router.push(`/?s=${encodeURIComponent(query)}`);
+    router.push(`/search?s=${encodeURIComponent(query)}`);
   };
 
   const handleClear = (e) => {
@@ -140,8 +141,8 @@ export default function Header() {
       <div className="hidden border-b border-[#dbe2e7] text-[13px] text-[#233c66] sm:block sm:h-[39px]">
         <div className="mx-auto flex h-full w-[calc(100%-30px)] max-w-[1304px] items-start justify-between sm:w-[calc(100%-48px)] sm:items-center">
           <div className="flex flex-col gap-1 sm:flex-row sm:gap-[30px]">
-            <span>Customer Care : <a className="underline underline-offset-2" href="tel:+18779912355">+1-877-991-2355</a></span>
-            <span><b>Email:</b> <a className="underline underline-offset-2" href="mailto:apply@funderamallc.com">apply@funderamallc.com</a></span>
+            <span>Customer Care : <a className="underline underline-offset-2" href={`tel:${globalInfo.phoneRaw}`}>{globalInfo.phone}</a></span>
+            <span><b>Email:</b> <a className="underline underline-offset-2" href={`mailto:${globalInfo.emailApply}`}>{globalInfo.emailApply}</a></span>
           </div>
           <Suspense
             fallback={
@@ -226,7 +227,7 @@ export default function Header() {
                     el.style.visibility = "visible";
                     el.style.pointerEvents = "auto";
                   }
-                  router.push(`/?s=${encodeURIComponent(q)}`);
+                  router.push(`/search?s=${encodeURIComponent(q)}`);
                 }}
                 className="mb-4 flex h-11 items-center rounded-[6px] border border-[#dbe2e7] bg-[#f8fafc] px-3.5 transition focus-within:border-[#183059] focus-within:bg-white"
               >
@@ -286,14 +287,14 @@ export default function Header() {
               <div className="mt-4 border-t border-[#f1f5f9] pt-3 text-[13px] text-[#5d7788] space-y-2">
                 <div className="flex items-center justify-between">
                   <span>Customer Care:</span>
-                  <a href="tel:+18779912355" className="font-semibold text-[#183059]">
-                    +1-877-991-2355
+                  <a href={`tel:${globalInfo.phoneRaw}`} className="font-semibold text-[#183059]">
+                    {globalInfo.phone}
                   </a>
                 </div>
                 <div className="flex items-center justify-between">
                   <span>Email:</span>
-                  <a href="mailto:apply@funderamallc.com" className="font-semibold text-[#183059]">
-                    apply@funderamallc.com
+                  <a href={`mailto:${globalInfo.emailApply}`} className="font-semibold text-[#183059]">
+                    {globalInfo.emailApply}
                   </a>
                 </div>
               </div>

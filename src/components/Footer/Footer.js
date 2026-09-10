@@ -9,6 +9,7 @@ import {
   MapPin,
   ArrowUp,
 } from "lucide-react";
+import globalInfo from "@/data/globalInfo";
 
 export default function Footer() {
   const pathname = usePathname() || "";
@@ -193,10 +194,10 @@ export default function Footer() {
                 <Phone className="mt-1 h-5 w-5 shrink-0 text-[#eed900]" />
                 <div>
                   <a
-                    href="tel:+18779912355"
+                    href={`tel:${globalInfo.phoneRaw}`}
                     className="font-semibold text-white no-underline transition hover:text-[#eed900]"
                   >
-                    +1-877-991-2355
+                    {globalInfo.phone}
                   </a>
                   <p className="m-0 mt-0.5 text-xs text-[#8ea5be]">Customer Care</p>
                 </div>
@@ -207,10 +208,10 @@ export default function Footer() {
                 <Mail className="mt-1 h-5 w-5 shrink-0 text-[#eed900]" />
                 <div>
                   <a
-                    href="mailto:contact@funderamallc.com"
+                    href={`mailto:${globalInfo.emailContact}`}
                     className="text-white no-underline transition hover:text-[#eed900]"
                   >
-                    contact@funderamallc.com
+                    {globalInfo.emailContact}
                   </a>
                   <p className="m-0 mt-0.5 text-xs text-[#8ea5be]">Information & support</p>
                 </div>
@@ -221,9 +222,9 @@ export default function Footer() {
                 <MapPin className="mt-1 h-5 w-5 shrink-0 text-[#eed900]" />
                 <div>
                   <p className="m-0 font-medium leading-snug text-white">
-                    19355 TURNBERRY WAY SUITE 27D AVENTURA,
+                    {globalInfo.address.line1}
                     <br />
-                    FLORIDA 33180
+                    {globalInfo.address.line2}
                   </p>
                   <p className="m-0 mt-0.5 text-xs text-[#8ea5be]">office location</p>
                 </div>

@@ -5,6 +5,7 @@ import Header from "@/components/Header/Header";
 import Footer from "@/components/Footer/Footer";
 import ReCaptcha from "@/components/Common/ReCaptcha";
 import { MapPin, Mail, Phone } from "lucide-react";
+import globalInfo from "@/data/globalInfo";
 
 function SBALoansBanner() {
   return (
@@ -148,18 +149,53 @@ function WhatIsSBALoanSection() {
 }
 
 function ContactSectionSBA() {
+  const [formData, setFormData] = useState({ name: "", phone: "" });
+  const [loading, setLoading] = useState(false);
+  const [serverError, setServerError] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [captchaToken, setCaptchaToken] = useState(null);
   const [captchaError, setCaptchaError] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!captchaToken) {
       setCaptchaError("Please verify that you are not a robot.");
       return;
     }
+    if (formData.phone.length !== 10) {
+      setServerError("Please enter a valid 10-digit phone number.");
+      return;
+    }
     setCaptchaError("");
-    setSubmitted(true);
+    setServerError("");
+    setLoading(true);
+
+    try {
+      const res = await fetch("/api/callback", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: formData.name,
+          phone: formData.phone,
+          pageSource: "SBA Loans",
+          captchaToken,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || "Failed to submit request. Please try again.");
+      }
+      setSubmitted(true);
+      setFormData({ name: "", phone: "" });
+      setCaptchaToken(null);
+      setTimeout(() => {
+        setSubmitted(false);
+      }, 3000);
+    } catch (err) {
+      setServerError(err.message || "Something went wrong.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -168,41 +204,43 @@ function ContactSectionSBA() {
         {/* Contact Info Cards */}
         <div className="mb-14 grid grid-cols-1 gap-6 sm:grid-cols-3 sm:gap-8">
           {/* Card 1: Address */}
-          <div className="flex flex-col items-center rounded-[8px] border border-[#e2e8f0] bg-[#f8fafc] p-6 text-center transition hover:border-[#cbd5e1] hover:shadow-sm">
-            <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-[#e8f7ff] text-[#183059]">
-              <MapPin className="h-5 w-5" />
+          <div className="group flex flex-col items-center justify-center rounded-[12px] border border-[#eaedf1] bg-white p-7 text-center shadow-[0_4px_20px_rgba(20,47,126,0.05)] transition-all duration-300 ease-in-out hover:-translate-y-2 hover:border-[#00b0ff]/40 hover:shadow-[0_20px_40px_rgba(20,47,126,0.12)] sm:p-8">
+            <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-[#f4f8fc] text-[#183059] transition-all duration-300 group-hover:scale-110 group-hover:bg-[#183059] group-hover:text-[#eed900]">
+              <MapPin className="h-6 w-6 stroke-current" strokeWidth={1.7} />
             </div>
-            <h4 className="font-['Rubik',sans-serif] text-lg font-medium text-[#183059]">
+            <h4 className="font-['Rubik',sans-serif] text-[18px] font-medium leading-snug text-[#183059] transition-colors group-hover:text-[#00b0ff] sm:text-[20px]">
               Corporate Office
             </h4>
-            <span className="text-sm font-normal text-[#7a8a99]">New York, NY</span>
+            <span className="mt-1 text-sm font-normal text-[#7a8a99]">New York, NY</span>
           </div>
 
           {/* Card 2: Email */}
-          <div className="flex flex-col items-center rounded-[8px] border border-[#e2e8f0] bg-[#f8fafc] p-6 text-center transition hover:border-[#cbd5e1] hover:shadow-sm">
-            <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-[#e8f7ff] text-[#183059]">
-              <Mail className="h-5 w-5" />
+          <a
+            href={`mailto:${globalInfo.emailApply}`}
+            className="group flex cursor-pointer flex-col items-center justify-center rounded-[12px] border border-[#eaedf1] bg-white p-7 text-center no-underline shadow-[0_4px_20px_rgba(20,47,126,0.05)] transition-all duration-300 ease-in-out hover:-translate-y-2 hover:border-[#00b0ff]/40 hover:shadow-[0_20px_40px_rgba(20,47,126,0.12)] sm:p-8"
+          >
+            <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-[#f4f8fc] text-[#183059] transition-all duration-300 group-hover:scale-110 group-hover:bg-[#183059] group-hover:text-[#eed900]">
+              <Mail className="h-6 w-6 stroke-current" strokeWidth={1.7} />
             </div>
-            <h4 className="font-['Rubik',sans-serif] text-lg font-medium text-[#183059]">
-              <a href="mailto:apply@funderamallc.com" className="hover:underline">
-                apply@funderamallc.com
-              </a>
+            <h4 className="font-['Rubik',sans-serif] text-[18px] font-medium leading-snug text-[#183059] transition-colors group-hover:text-[#00b0ff] sm:text-[20px]">
+              {globalInfo.emailApply}
             </h4>
-            <span className="text-sm font-normal text-[#7a8a99]">Drop us a line</span>
-          </div>
+            <span className="mt-1 text-sm font-normal text-[#7a8a99]">Drop us a line</span>
+          </a>
 
           {/* Card 3: Phone */}
-          <div className="flex flex-col items-center rounded-[8px] border border-[#e2e8f0] bg-[#f8fafc] p-6 text-center transition hover:border-[#cbd5e1] hover:shadow-sm">
-            <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-[#e8f7ff] text-[#183059]">
-              <Phone className="h-5 w-5" />
+          <a
+            href={`tel:${globalInfo.phoneRaw}`}
+            className="group flex cursor-pointer flex-col items-center justify-center rounded-[12px] border border-[#eaedf1] bg-white p-7 text-center no-underline shadow-[0_4px_20px_rgba(20,47,126,0.05)] transition-all duration-300 ease-in-out hover:-translate-y-2 hover:border-[#00b0ff]/40 hover:shadow-[0_20px_40px_rgba(20,47,126,0.12)] sm:p-8"
+          >
+            <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-[#f4f8fc] text-[#183059] transition-all duration-300 group-hover:scale-110 group-hover:bg-[#183059] group-hover:text-[#eed900]">
+              <Phone className="h-6 w-6 stroke-current" strokeWidth={1.7} />
             </div>
-            <h4 className="font-['Rubik',sans-serif] text-lg font-medium text-[#183059]">
-              <a href="tel:+18779912355" className="hover:underline">
-                +1-877-991-2355
-              </a>
+            <h4 className="font-['Rubik',sans-serif] text-[18px] font-medium leading-snug text-[#183059] transition-colors group-hover:text-[#00b0ff] sm:text-[20px]">
+              {globalInfo.phone}
             </h4>
-            <span className="text-sm font-normal text-[#7a8a99]">Have any questions?</span>
-          </div>
+            <span className="mt-1 text-sm font-normal text-[#7a8a99]">Have any questions?</span>
+          </a>
         </div>
 
         {/* Form Container */}
@@ -213,23 +251,13 @@ function ContactSectionSBA() {
           <div className="mx-auto mb-9 mt-4 h-[1.5px] w-[95px] bg-[#293039]/40" />
 
           {submitted ? (
-            <div className="rounded-[8px] border border-green-200 bg-green-50 p-7 text-center">
+            <div className="rounded-[8px] border border-green-200 bg-green-50 p-7 text-center transition-all duration-300">
               <h3 className="font-['Rubik',sans-serif] text-[19px] font-medium text-green-800">
                 Thank you!
               </h3>
               <p className="mt-2 text-[14px] text-green-700">
                 Your request has been received. Our representative will call you back shortly.
               </p>
-              <button
-                type="button"
-                onClick={() => {
-                  setSubmitted(false);
-                  setCaptchaToken(null);
-                }}
-                className="mt-5 inline-block cursor-pointer rounded-[4px] bg-[#183059] px-6 py-2.5 text-sm font-medium text-white transition hover:bg-[#233f75]"
-              >
-                Request another call-back
-              </button>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-5 text-left">
@@ -245,6 +273,12 @@ function ContactSectionSBA() {
                   id="sba-name"
                   name="name"
                   required
+                  placeholder="Enter your full name"
+                  value={formData.name}
+                  onChange={(e) => {
+                    const val = e.target.value.replace(/[^a-zA-Z\s]/g, "");
+                    setFormData({ ...formData, name: val });
+                  }}
                   className="w-full rounded-[4px] border border-[#d6dee5] bg-[#fcfdfe] px-4 py-3 text-[15px] text-[#111827] outline-none transition focus:border-[#183059] focus:bg-white"
                 />
               </div>
@@ -261,7 +295,16 @@ function ContactSectionSBA() {
                   id="sba-phone"
                   name="phone"
                   required
-                  pattern="[0-9()#+*\-=. ]+"
+                  maxLength={10}
+                  minLength={10}
+                  pattern="[0-9]{10}"
+                  title="Please enter a 10-digit phone number"
+                  placeholder="10-digit phone number"
+                  value={formData.phone}
+                  onChange={(e) => {
+                    const val = e.target.value.replace(/\D/g, "").slice(0, 10);
+                    setFormData({ ...formData, phone: val });
+                  }}
                   className="w-full rounded-[4px] border border-[#d6dee5] bg-[#fcfdfe] px-4 py-3 text-[15px] text-[#111827] outline-none transition focus:border-[#183059] focus:bg-white"
                 />
               </div>
@@ -282,13 +325,21 @@ function ContactSectionSBA() {
                 )}
               </div>
 
-              <button
-                type="submit"
-                className="flex min-h-[50px] w-full items-center justify-center gap-3 rounded-[4px] bg-[#192f5a] px-6 py-3.5 text-base font-medium text-white transition hover:bg-[#233f75] active:scale-[0.99]"
-              >
-                <Phone className="h-4 w-4 fill-white stroke-none" />
-                <span>Request a call-back</span>
-              </button>
+              <div>
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="flex min-h-[50px] w-full items-center justify-center gap-3 rounded-[4px] bg-[#192f5a] px-6 py-3.5 text-base font-medium text-white transition hover:bg-[#233f75] disabled:cursor-not-allowed disabled:opacity-60 active:scale-[0.99]"
+                >
+                  <Phone className="h-4 w-4 fill-white stroke-none" />
+                  <span>{loading ? "Submitting..." : "Request a call-back"}</span>
+                </button>
+                {serverError && (
+                  <p className="mt-3 text-center text-sm font-medium text-red-600">
+                    {serverError}
+                  </p>
+                )}
+              </div>
             </form>
           )}
         </div>

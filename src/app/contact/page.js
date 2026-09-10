@@ -1,11 +1,13 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Header from "@/components/Header/Header";
 import Footer from "@/components/Footer/Footer";
 import ReCaptcha from "@/components/Common/ReCaptcha";
 import { Phone, Mail, MapPin } from "lucide-react";
+import globalInfo from "@/data/globalInfo";
 
 function ContactBanner() {
   return (
@@ -58,7 +60,7 @@ function ContactCards() {
           {/* Card 1: Phone */}
           <div className="group flex flex-col items-center justify-center rounded-[12px] border border-[#eaedf1] bg-white p-8 sm:p-10 text-center shadow-[0_4px_20px_rgba(20,47,126,0.06)] transition-all duration-300 ease-in-out hover:-translate-y-2 hover:border-[#cbd5e1] hover:shadow-[0_20px_40px_rgba(20,47,126,0.14)]">
             <a
-              href="tel:+18779912355"
+              href={`tel:${globalInfo.phoneRaw}`}
               className="mb-5 inline-flex h-16 w-16 items-center justify-center rounded-full bg-[#f4f8fc] text-[#183059] transition-all duration-300 group-hover:scale-110 group-hover:bg-[#183059] group-hover:text-[#F9E721]"
               aria-label="Call Customer Care"
             >
@@ -66,10 +68,10 @@ function ContactCards() {
             </a>
             <h4 className="font-['Rubik',sans-serif] text-[20px] sm:text-[22px] font-normal leading-tight text-[#183059]">
               <a
-                href="tel:+18779912355"
+                href={`tel:${globalInfo.phoneRaw}`}
                 className="text-[#183059] no-underline transition-colors hover:text-[#00b0ff]"
               >
-                +1-877-991-2355
+                {globalInfo.phone}
               </a>
             </h4>
             <div className="mt-2.5 font-['Inter',sans-serif] text-[14px] text-[#8ba2b5]">
@@ -80,7 +82,7 @@ function ContactCards() {
           {/* Card 2: Email */}
           <div className="group flex flex-col items-center justify-center rounded-[12px] border border-[#eaedf1] bg-white p-8 sm:p-10 text-center shadow-[0_4px_20px_rgba(20,47,126,0.06)] transition-all duration-300 ease-in-out hover:-translate-y-2 hover:border-[#cbd5e1] hover:shadow-[0_20px_40px_rgba(20,47,126,0.14)]">
             <a
-              href="mailto:apply@funderamallc.com"
+              href={`mailto:${globalInfo.emailApply}`}
               className="mb-5 inline-flex h-16 w-16 items-center justify-center rounded-full bg-[#f4f8fc] text-[#183059] transition-all duration-300 group-hover:scale-110 group-hover:bg-[#183059] group-hover:text-[#F9E721]"
               aria-label="Email Support"
             >
@@ -88,10 +90,10 @@ function ContactCards() {
             </a>
             <h4 className="font-['Rubik',sans-serif] text-[18px] sm:text-[20px] font-normal leading-tight text-[#183059]">
               <a
-                href="mailto:apply@funderamallc.com"
+                href={`mailto:${globalInfo.emailApply}`}
                 className="text-[#183059] no-underline transition-colors hover:text-[#00b0ff]"
               >
-                apply@funderamallc.com
+                {globalInfo.emailApply}
               </a>
             </h4>
             <div className="mt-2.5 font-['Inter',sans-serif] text-[14px] text-[#8ba2b5]">
@@ -105,9 +107,9 @@ function ContactCards() {
               <MapPin className="h-7 w-7 stroke-current" strokeWidth={1.6} />
             </div>
             <h4 className="max-w-[320px] font-['Rubik',sans-serif] text-[15px] sm:text-[16px] font-normal uppercase leading-[1.5] text-[#183059]">
-              19355 TURNBERRY WAY SUITE 27D
+              {globalInfo.address.line1}
               <br />
-              AVENTURA, FLORIDA 33180
+              {globalInfo.address.line2}
             </h4>
             <div className="mt-2.5 font-['Inter',sans-serif] text-[14px] text-[#8ba2b5]">
               Office location
@@ -120,18 +122,66 @@ function ContactCards() {
 }
 
 function ContactFormSection() {
-  const [submitted, setSubmitted] = useState(false);
+  const router = useRouter();
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    message: "",
+  });
+  const [loading, setLoading] = useState(false);
+  const [serverError, setServerError] = useState("");
   const [captchaToken, setCaptchaToken] = useState(null);
   const [captchaError, setCaptchaError] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!captchaToken) {
       setCaptchaError("Please verify that you are not a robot.");
       return;
     }
+    if (formData.phone && formData.phone.length !== 10) {
+      setServerError("Please enter a valid 10-digit phone number.");
+      return;
+    }
     setCaptchaError("");
-    setSubmitted(true);
+    setServerError("");
+    setLoading(true);
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone,
+          message: formData.message,
+          captchaToken,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || "Failed to send message. Please try again.");
+      }
+      // Instantly trigger website's official full-page loader
+      const loaderEl = document.getElementById("load");
+      if (loaderEl) {
+        loaderEl.style.transition = "none";
+        loaderEl.style.opacity = "1";
+        loaderEl.style.visibility = "visible";
+        loaderEl.style.pointerEvents = "auto";
+      }
+      if (typeof window !== "undefined") {
+        window.scrollTo(0, 0);
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+      }
+      router.push("/thank-you");
+    } catch (err) {
+      setServerError(err.message || "Something went wrong.");
+      setLoading(false);
+    }
   };
 
   return (
@@ -149,27 +199,7 @@ function ContactFormSection() {
 
         {/* Form Container */}
         <div className="mx-auto mt-10 max-w-[760px] sm:mt-12">
-          {submitted ? (
-            <div className="rounded-[8px] border border-green-200 bg-green-50 p-8 text-center">
-              <h3 className="font-['Rubik',sans-serif] text-[20px] font-medium text-green-800">
-                Thank you for reaching out!
-              </h3>
-              <p className="mt-2 text-[15px] text-green-700">
-                Your message has been received. Our representative will get back to you shortly.
-              </p>
-              <button
-                type="button"
-                onClick={() => {
-                  setSubmitted(false);
-                  setCaptchaToken(null);
-                }}
-                className="mt-6 inline-block cursor-pointer rounded-[4px] bg-[#183059] px-6 py-2.5 text-sm font-medium text-white transition hover:bg-[#233f75]"
-              >
-                Send another message
-              </button>
-            </div>
-          ) : (
-            <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-6">
               {/* Name */}
               <div>
                 <label
@@ -183,7 +213,12 @@ function ContactFormSection() {
                   id="contact-name"
                   name="name"
                   required
-                  placeholder="Name"
+                  placeholder="Enter your full name"
+                  value={formData.name}
+                  onChange={(e) => {
+                    const val = e.target.value.replace(/[^a-zA-Z\s]/g, "");
+                    setFormData({ ...formData, name: val });
+                  }}
                   className="w-full rounded-[4px] border border-[#d6dee5] bg-[#fcfdfe] px-4 py-3 text-[15px] text-[#111827] outline-none transition placeholder:text-[#94a3b8] focus:border-[#183059] focus:bg-white"
                 />
               </div>
@@ -201,6 +236,8 @@ function ContactFormSection() {
                   id="contact-email"
                   name="email"
                   required
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   className="w-full rounded-[4px] border border-[#d6dee5] bg-[#fcfdfe] px-4 py-3 text-[15px] text-[#111827] outline-none transition focus:border-[#183059] focus:bg-white"
                 />
               </div>
@@ -217,8 +254,15 @@ function ContactFormSection() {
                   type="tel"
                   id="contact-phone"
                   name="phone"
-                  pattern="[0-9()#+*\-=. ]+"
-                  title="Only numbers and phone characters (#, -, *, etc) are accepted."
+                  maxLength={10}
+                  pattern="[0-9]{10}"
+                  title="Please enter a 10-digit phone number"
+                  placeholder="10-digit phone number"
+                  value={formData.phone}
+                  onChange={(e) => {
+                    const val = e.target.value.replace(/\D/g, "").slice(0, 10);
+                    setFormData({ ...formData, phone: val });
+                  }}
                   className="w-full rounded-[4px] border border-[#d6dee5] bg-[#fcfdfe] px-4 py-3 text-[15px] text-[#111827] outline-none transition focus:border-[#183059] focus:bg-white"
                 />
               </div>
@@ -235,6 +279,8 @@ function ContactFormSection() {
                   id="contact-message"
                   name="message"
                   rows={5}
+                  value={formData.message}
+                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                   className="w-full resize-y rounded-[4px] border border-[#d6dee5] bg-[#fcfdfe] px-4 py-3 text-[15px] text-[#111827] outline-none transition focus:border-[#183059] focus:bg-white"
                 />
               </div>
@@ -259,13 +305,18 @@ function ContactFormSection() {
               <div>
                 <button
                   type="submit"
-                  className="w-full cursor-pointer rounded-[4px] bg-[#183059] py-3.5 text-center font-['Rubik',sans-serif] text-[16px] font-medium text-white transition hover:bg-[#233f75] active:scale-[0.99]"
+                  disabled={loading}
+                  className="w-full cursor-pointer rounded-[4px] bg-[#183059] py-3.5 text-center font-['Rubik',sans-serif] text-[16px] font-medium text-white transition hover:bg-[#233f75] disabled:cursor-not-allowed disabled:opacity-60 active:scale-[0.99]"
                 >
-                  Send message
+                  {loading ? "Sending..." : "Send message"}
                 </button>
+                {serverError && (
+                  <p className="mt-3 text-center text-[15px] font-medium text-red-600">
+                    {serverError}
+                  </p>
+                )}
               </div>
             </form>
-          )}
         </div>
       </div>
     </section>

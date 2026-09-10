@@ -1,3 +1,5 @@
+import globalInfo from "@/data/globalInfo";
+
 export const searchableItems = [
   {
     title: "ALL YOU NEED TO KNOW ABOUT SBA 7(a) Loan",
@@ -59,7 +61,7 @@ export const searchableItems = [
     title: "Contact",
     link: "/contact",
     image: null,
-    desc: "+1-877-991-2355 Customer Care apply@funderamallc.com Support & information 19355 TURNBERRY WAY SUITE 27D AVENTURA, FLORIDA 33180 Office location Feel Free to Contact Us If you have any queries please connect with us.",
+    desc: `${globalInfo.phone} Customer Care ${globalInfo.emailApply} Support & information ${globalInfo.address.full} Office location Feel Free to Contact Us If you have any queries please connect with us.`,
     content: "Contact Funderama LLC customer care email phone number address Aventura Florida request a call-back appointment."
   },
   {
