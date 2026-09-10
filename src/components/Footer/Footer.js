@@ -1,15 +1,25 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import {
   Phone,
   Mail,
   MapPin,
   ArrowUp,
 } from "lucide-react";
+import globalInfo from "@/data/globalInfo";
 
 export default function Footer() {
+  const pathname = usePathname() || "";
+  const router = useRouter();
+  const [hasSearch, setHasSearch] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    setHasSearch(Boolean(typeof window !== "undefined" && window.location.search));
+  }, [pathname]);
 
   useEffect(() => {
     const toggleVisibility = () => {
@@ -41,13 +51,28 @@ export default function Footer() {
         <div className="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-[40%_25%_35%] lg:gap-8">
           {/* Column 1: Logo & Social Icons */}
           <div className="space-y-8">
-            <a href="/" className="inline-block">
+            <Link
+              href="/"
+              onClick={(e) => {
+                if (typeof window !== "undefined" && window.location.search) {
+                  e.preventDefault();
+                  router.push("/");
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                  return;
+                }
+                if (pathname === "/" || pathname === "/home" || pathname === "") {
+                  e.preventDefault();
+                  window.scrollTo({ top: 0, behavior: "smooth" });
+                }
+              }}
+              className="inline-block cursor-pointer"
+            >
               <img
                 src="/images/fundrama-logo-white.png"
                 alt="Funderama Logo"
                 className="h-auto w-[220px] object-contain sm:w-[240px]"
               />
-            </a>
+            </Link>
 
             {/* Social Icons (White rounded boxes) */}
             <div className="flex items-center gap-2.5">
@@ -104,46 +129,57 @@ export default function Footer() {
               Useful links
             </h4>
             <ul className="space-y-3.5 p-0 m-0 list-none text-[15px]">
-              <li>
-                <a
-                  href="/"
-                  className="font-medium text-[#eed900] no-underline transition hover:text-[#fff055]"
-                >
-                  Home
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#financing"
-                  className="text-[#b4c6db] no-underline transition hover:text-white"
-                >
-                  Quick Financing
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#sba"
-                  className="text-[#b4c6db] no-underline transition hover:text-white"
-                >
-                  SBA Loans
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#blog"
-                  className="text-[#b4c6db] no-underline transition hover:text-white"
-                >
-                  Blog
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#contact"
-                  className="text-[#b4c6db] no-underline transition hover:text-white"
-                >
-                  Contact
-                </a>
-              </li>
+              {[
+                { label: "Home", href: "/" },
+                { label: "Quick Financing", href: "/quick-financing" },
+                { label: "SBA Loans", href: "/sba-loans" },
+                { label: "Blog", href: "/blog" },
+                { label: "Contact", href: "/contact" },
+              ].map(({ label, href }) => {
+                const isHome = href === "/" && (pathname === "/" || pathname === "/home" || pathname === "") && !hasSearch;
+                const isPageActive = !href.startsWith("#") && href !== "/" && (pathname === href || pathname.startsWith(href + "/"));
+                const isActive = isHome || isPageActive;
+
+                const className = isActive
+                  ? "font-medium text-[#eed900] no-underline transition hover:text-[#fff055]"
+                  : "text-[#b4c6db] no-underline transition hover:text-white";
+
+                return (
+                  <li key={label}>
+                    {href.startsWith("#") ? (
+                      <a
+                        href={pathname === "/" || pathname === "/home" ? href : `/${href}`}
+                        className={className}
+                      >
+                        {label}
+                      </a>
+                    ) : (
+                      <Link
+                        href={href}
+                        onClick={
+                          href === "/"
+                            ? (e) => {
+                                if (typeof window !== "undefined" && window.location.search) {
+                                  e.preventDefault();
+                                  router.push("/");
+                                  window.scrollTo({ top: 0, behavior: "smooth" });
+                                  return;
+                                }
+                                if (pathname === "/" || pathname === "/home" || pathname === "") {
+                                  e.preventDefault();
+                                  window.scrollTo({ top: 0, behavior: "smooth" });
+                                }
+                              }
+                            : undefined
+                        }
+                        className={className}
+                      >
+                        {label}
+                      </Link>
+                    )}
+                  </li>
+                );
+              })}
             </ul>
           </div>
 
@@ -158,10 +194,10 @@ export default function Footer() {
                 <Phone className="mt-1 h-5 w-5 shrink-0 text-[#eed900]" />
                 <div>
                   <a
-                    href="tel:+18779912355"
+                    href={`tel:${globalInfo.phoneRaw}`}
                     className="font-semibold text-white no-underline transition hover:text-[#eed900]"
                   >
-                    +1-877-991-2355
+                    {globalInfo.phone}
                   </a>
                   <p className="m-0 mt-0.5 text-xs text-[#8ea5be]">Customer Care</p>
                 </div>
@@ -172,10 +208,10 @@ export default function Footer() {
                 <Mail className="mt-1 h-5 w-5 shrink-0 text-[#eed900]" />
                 <div>
                   <a
-                    href="mailto:contact@funderamallc.com"
+                    href={`mailto:${globalInfo.emailContact}`}
                     className="text-white no-underline transition hover:text-[#eed900]"
                   >
-                    contact@funderamallc.com
+                    {globalInfo.emailContact}
                   </a>
                   <p className="m-0 mt-0.5 text-xs text-[#8ea5be]">Information & support</p>
                 </div>
@@ -186,7 +222,9 @@ export default function Footer() {
                 <MapPin className="mt-1 h-5 w-5 shrink-0 text-[#eed900]" />
                 <div>
                   <p className="m-0 font-medium leading-snug text-white">
-                    19355 TURNBERRY WAY SUITE 27D AVENTURA, FLORIDA 33180
+                    {globalInfo.address.line1}
+                    <br />
+                    {globalInfo.address.line2}
                   </p>
                   <p className="m-0 mt-0.5 text-xs text-[#8ea5be]">office location</p>
                 </div>
@@ -204,12 +242,12 @@ export default function Footer() {
             FUNDERAMA LLC &copy; 2016 - 2025. All rights reserved.
           </p>
           <div className="flex items-center gap-6">
-            <a href="#privacy" className="text-[#8ea5be] no-underline transition hover:text-white">
+            <Link href="/privacy-policy" className="text-[#8ea5be] no-underline transition hover:text-white">
               Terms &amp; conditions
-            </a>
-            <a href="#contact" className="text-[#8ea5be] no-underline transition hover:text-white">
+            </Link>
+            <Link href="/contact" className="text-[#8ea5be] no-underline transition hover:text-white">
               Contact us
-            </a>
+            </Link>
           </div>
         </div>
       </div>
@@ -218,7 +256,7 @@ export default function Footer() {
       <button
         onClick={scrollToTop}
         aria-label="Scroll to top"
-        className={`fixed bottom-6 right-6 z-50 flex h-10 w-10 items-center justify-center rounded-full bg-white text-[#183059] shadow-[0_4px_14px_rgba(0,0,0,0.25)] transition-all duration-300 hover:bg-[#eed900] hover:text-[#183059] active:scale-95 ${
+        className={`fixed bottom-6 right-6 z-50 flex h-10 w-10 cursor-pointer items-center justify-center rounded-full bg-white text-[#183059] shadow-[0_4px_14px_rgba(0,0,0,0.25)] transition-all duration-300 hover:bg-[#eed900] hover:text-[#183059] active:scale-95 ${
           isVisible
             ? "opacity-100 translate-y-0 pointer-events-auto"
             : "opacity-0 translate-y-4 pointer-events-none"
