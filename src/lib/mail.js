@@ -1,30 +1,26 @@
-import nodemailer from "nodemailer";
+import { Resend } from "resend";
 import path from "path";
 import fs from "fs";
-import mailConfig from "../config/config";
-import globalInfo from "../data/globalInfo";
+import mailConfig from "../config/config.js";
+import globalInfo from "../data/globalInfo.js";
+
+let resendClient = null;
 
 /**
- * Creates and returns the Nodemailer transporter using settings from mailConfig and secret pass from .env
+ * Returns a cached Resend client instance using RESEND_API_KEY from environment variables
  */
-function getTransporter() {
-  const host = mailConfig.smtpHost || "smtp.gmail.com";
-  const port = Number(mailConfig.smtpPort) || 465;
-  const secure = mailConfig.smtpSecure !== undefined ? Boolean(mailConfig.smtpSecure) : true;
-  const user = mailConfig.smtpUser;
-  const pass = process.env.SMTP_PASS;
+function getResendClient() {
+  const apiKey = process.env.RESEND_API_KEY;
 
-  if (!user || !pass) {
-    console.warn("⚠️ SMTP password (SMTP_PASS in .env) or user in mailConfig is missing. Email dispatch skipped.");
+  if (!apiKey) {
+    console.warn("⚠️ RESEND_API_KEY in .env is missing. Email dispatch skipped.");
     return null;
   }
 
-  return nodemailer.createTransport({
-    host,
-    port,
-    secure,
-    auth: { user, pass },
-  });
+  if (!resendClient) {
+    resendClient = new Resend(apiKey);
+  }
+  return resendClient;
 }
 
 /**
@@ -37,8 +33,9 @@ function getLogoAttachment() {
       return [
         {
           filename: "logo.png",
-          path: logoPath,
-          cid: "funderama-logo",
+          content: fs.readFileSync(logoPath).toString("base64"),
+          contentType: "image/png",
+          contentId: "funderama-logo",
         },
       ];
     }
@@ -246,19 +243,20 @@ function renderEmailWrapper({ title, content, badgeText = "Notification" }) {
 }
 
 /**
- * Sends both User Confirmation and Admin Alert for detailed Contact Us inquiries
+ * Sends both User Confirmation and Admin Alert for detailed Contact Us inquiries using Resend
  */
 export async function sendContactInquiryEmails({ name, email, phone, message, ipAddress }) {
-  const transporter = getTransporter();
-  if (!transporter) return { success: false, reason: "SMTP not configured" };
+  const resend = getResendClient();
+  if (!resend) return { success: false, reason: "Resend API key not configured" };
 
   const attachments = getLogoAttachment();
-  const fromAddress = `"${mailConfig.senderName}" <${mailConfig.smtpUser || mailConfig.senderEmail}>`;
+  const fromAddress = `"${mailConfig.senderName}" <${mailConfig.senderEmail}>`;
   const timestamp = new Date().toLocaleString("en-US", { timeZone: "America/New_York", dateStyle: "medium", timeStyle: "short" });
+  const cleanEmail = email ? email.trim() : "";
 
   try {
-    // 1. Send Confirmation Email to the User
-    if (email) {
+    // 1. Send Confirmation Email to the User (if email provided)
+    if (cleanEmail) {
       const userHtml = renderEmailWrapper({
         title: "Thank you for contacting Funderama!",
         badgeText: "Inquiry Received",
@@ -276,7 +274,7 @@ export async function sendContactInquiryEmails({ name, email, phone, message, ip
             </tr>
             <tr>
               <td class="table-label" style="width: 32%; word-break: normal;">Email</td>
-              <td class="table-value" style="word-break: break-all; word-wrap: break-word; overflow-wrap: anywhere;"><a href="mailto:${email}" style="color: #0284c7; text-decoration: none; word-break: break-all; word-wrap: break-word; overflow-wrap: anywhere;">${email}</a></td>
+              <td class="table-value" style="word-break: break-all; word-wrap: break-word; overflow-wrap: anywhere;"><a href="mailto:${cleanEmail}" style="color: #0284c7; text-decoration: none; word-break: break-all; word-wrap: break-word; overflow-wrap: anywhere;">${cleanEmail}</a></td>
             </tr>
             ${phone ? `
             <tr>
@@ -302,17 +300,24 @@ export async function sendContactInquiryEmails({ name, email, phone, message, ip
         `,
       });
 
-      await transporter.sendMail({
+      const userEmailPayload = {
         from: fromAddress,
-        to: email,
+        to: cleanEmail,
         subject: `Thank you for contacting Funderama! We received your message`,
         html: userHtml,
-        attachments,
-      });
+      };
+      if (attachments.length > 0) {
+        userEmailPayload.attachments = attachments;
+      }
+
+      const { error: userMailError } = await resend.emails.send(userEmailPayload);
+      if (userMailError) {
+        console.error("Resend error sending user confirmation email:", userMailError);
+      }
     }
 
     // 2. Send Notification Email to Admin
-    const adminRecipient = mailConfig.adminEmail;
+    const adminRecipient = (mailConfig.adminEmail || "").trim();
     const adminHtml = renderEmailWrapper({
       title: "New Contact Inquiry",
       badgeText: "New Contact Inquiry",
@@ -329,7 +334,7 @@ export async function sendContactInquiryEmails({ name, email, phone, message, ip
           </tr>
           <tr>
             <td class="table-label" style="width: 32%; word-break: normal;">Email Address</td>
-            <td class="table-value" style="word-break: break-all; word-wrap: break-word; overflow-wrap: anywhere;"><a href="mailto:${email}" style="color: #0284c7; text-decoration: none; word-break: break-all; word-wrap: break-word; overflow-wrap: anywhere;">${email}</a></td>
+            <td class="table-value" style="word-break: break-all; word-wrap: break-word; overflow-wrap: anywhere;">${cleanEmail ? `<a href="mailto:${cleanEmail}" style="color: #0284c7; text-decoration: none; word-break: break-all; word-wrap: break-word; overflow-wrap: anywhere;">${cleanEmail}</a>` : "Not provided"}</td>
           </tr>
           <tr>
             <td class="table-label" style="width: 32%; word-break: normal;">Phone Number</td>
@@ -351,22 +356,33 @@ export async function sendContactInquiryEmails({ name, email, phone, message, ip
           <div class="message-box">${message.replace(/\n/g, "<br>")}</div>
         </div>` : ""}
 
+        ${cleanEmail ? `
         <div style="text-align: center; margin-top: 24px;">
-          <a href="mailto:${email}?subject=Re:%20Your%20Inquiry%20with%20Funderama" class="btn-primary">
+          <a href="mailto:${cleanEmail}?subject=Re:%20Your%20Inquiry%20with%20Funderama" class="btn-primary">
             Reply to ${name}
           </a>
-        </div>
+        </div>` : ""}
       `,
     });
 
-    await transporter.sendMail({
+    const adminEmailPayload = {
       from: fromAddress,
       to: adminRecipient,
-      replyTo: email,
-      subject: `New Contact Inquiry: ${name} (${email})`,
+      subject: `New Contact Inquiry: ${name} (${cleanEmail || "No Email"})`,
       html: adminHtml,
-      attachments,
-    });
+    };
+    if (cleanEmail) {
+      adminEmailPayload.replyTo = cleanEmail;
+    }
+    if (attachments.length > 0) {
+      adminEmailPayload.attachments = attachments;
+    }
+
+    const { error: adminMailError } = await resend.emails.send(adminEmailPayload);
+    if (adminMailError) {
+      console.error("Resend error sending admin inquiry notification:", adminMailError);
+      return { success: false, error: adminMailError.message };
+    }
 
     return { success: true };
   } catch (error) {
@@ -376,18 +392,18 @@ export async function sendContactInquiryEmails({ name, email, phone, message, ip
 }
 
 /**
- * Sends Admin Alert for Quick Consultation / Callback lead submissions
+ * Sends Admin Alert for Quick Consultation / Callback lead submissions using Resend
  */
 export async function sendCallbackNotificationEmail({ name, phone, pageSource, ipAddress }) {
-  const transporter = getTransporter();
-  if (!transporter) return { success: false, reason: "SMTP not configured" };
+  const resend = getResendClient();
+  if (!resend) return { success: false, reason: "Resend API key not configured" };
 
   const attachments = getLogoAttachment();
-  const fromAddress = `"${mailConfig.senderName}" <${mailConfig.smtpUser || mailConfig.senderEmail}>`;
+  const fromAddress = `"${mailConfig.senderName}" <${mailConfig.senderEmail}>`;
   const timestamp = new Date().toLocaleString("en-US", { timeZone: "America/New_York", dateStyle: "medium", timeStyle: "short" });
+  const adminRecipient = (mailConfig.adminEmail || "").trim();
 
   try {
-    const adminRecipient = mailConfig.adminEmail;
     const adminHtml = renderEmailWrapper({
       title: "New Callback Request",
       badgeText: `Lead from ${pageSource}`,
@@ -428,13 +444,21 @@ export async function sendCallbackNotificationEmail({ name, phone, pageSource, i
       `,
     });
 
-    await transporter.sendMail({
+    const emailPayload = {
       from: fromAddress,
       to: adminRecipient,
       subject: `New Consultation Lead [${pageSource}]: ${name} (${phone})`,
       html: adminHtml,
-      attachments,
-    });
+    };
+    if (attachments.length > 0) {
+      emailPayload.attachments = attachments;
+    }
+
+    const { error: mailError } = await resend.emails.send(emailPayload);
+    if (mailError) {
+      console.error("Resend error sending callback notification email:", mailError);
+      return { success: false, error: mailError.message };
+    }
 
     return { success: true };
   } catch (error) {
