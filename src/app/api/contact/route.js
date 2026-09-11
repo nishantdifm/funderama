@@ -5,7 +5,11 @@ import { sendContactInquiryEmails } from "@/lib/mail";
 
 async function verifyCaptcha(token) {
   const secretKey = process.env.RECAPTCHA_SECRET_KEY;
-  if (!secretKey || !token) return true;
+  if (!secretKey) {
+    console.warn("⚠️ RECAPTCHA_SECRET_KEY is not configured.");
+    return false;
+  }
+  if (!token) return false;
   try {
     const res = await fetch("https://www.google.com/recaptcha/api/siteverify", {
       method: "POST",
@@ -13,10 +17,10 @@ async function verifyCaptcha(token) {
       body: `secret=${encodeURIComponent(secretKey)}&response=${encodeURIComponent(token)}`,
     });
     const data = await res.json();
-    return data.success;
+    return Boolean(data.success);
   } catch (err) {
     console.error("Captcha verification error:", err);
-    return true; // Fallback in case of local network limits
+    return false;
   }
 }
 
@@ -68,15 +72,22 @@ export async function POST(request) {
       }
     }
 
-    if (captchaToken) {
-      const isCaptchaValid = await verifyCaptcha(captchaToken);
-      if (!isCaptchaValid) {
-        return NextResponse.json(
-          { success: false, error: "reCAPTCHA verification failed. Please try again." },
-          { status: 400 }
-        );
-      }
+    // 3. Mandatory reCAPTCHA verification
+    if (!captchaToken) {
+      return NextResponse.json(
+        { success: false, error: "reCAPTCHA verification is required. Please verify that you are not a robot." },
+        { status: 400 }
+      );
     }
+
+    const isCaptchaValid = await verifyCaptcha(captchaToken);
+    if (!isCaptchaValid) {
+      return NextResponse.json(
+        { success: false, error: "reCAPTCHA verification failed. Please try again." },
+        { status: 400 }
+      );
+    }
+
 
     const pool = getDbPool();
     const [result] = await pool.execute(
