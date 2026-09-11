@@ -5,7 +5,7 @@ import Link from "next/link";
 import Header from "@/components/Header/Header";
 import Footer from "@/components/Footer/Footer";
 import ReCaptcha from "@/components/Common/ReCaptcha";
-import { Banknote, BriefcaseBusiness, Phone } from "lucide-react";
+import { Banknote, BriefcaseBusiness, Phone, ArrowRight } from "lucide-react";
 
 const assets = {
   heroImage: "https://funderama-llc.s3-eu-central-2.ionoscloud.com/customer-centric-lending-solutions.jpeg",
@@ -114,14 +114,44 @@ function HeroSection() {
 
 function ServicesSection() {
   return (
-    <section id="services" className="bg-white px-4 py-[88px] sm:px-6 sm:py-[110px]">
+    <section id="services" className="relative bg-white px-4 py-[88px] sm:px-6 sm:py-[110px]">
       <div className="mx-auto max-w-[1304px]">
-        <h2 className="mb-[62px] text-center text-[36px] font-semibold leading-tight text-[#1d3968]">Our Services</h2>
-        <div className="grid grid-cols-1 gap-10 lg:grid-cols-2">
+        {/* Section Heading */}
+        <div className="mb-14 text-center">
+          <h2 className="font-['Rubik',sans-serif] text-[36px] font-semibold leading-tight text-[#1d3968] sm:text-[42px]">
+            Our Services
+          </h2>
+          <div className="mx-auto mt-3.5 h-[3px] w-12 rounded-full bg-[#00b0ff]" />
+        </div>
+
+        <div className="grid grid-cols-1 gap-8 md:gap-10 lg:grid-cols-2">
           {services.map((service) => (
-            <Link className="flex min-h-[400px] flex-col items-center justify-center rounded-lg bg-white px-8 shadow-[0_0_20px_rgba(20,47,126,.13)] transition hover:-translate-y-1 hover:shadow-[0_12px_32px_rgba(20,47,126,.18)]" href={service.href} key={service.title}>
-              <service.Icon className="h-10 w-10 text-[#1d3968]" strokeWidth={2.5} aria-hidden="true" />
-              <h3 className="mt-8 text-[32px] font-normal text-[#293039]">{service.title}</h3>
+            <Link
+              key={service.title}
+              href={service.href}
+              className="group relative flex min-h-[340px] flex-col items-center justify-center overflow-hidden rounded-[20px] border border-[#eaedf3] bg-white px-8 py-14 text-center no-underline shadow-[0_4px_25px_rgba(20,47,126,0.06)] transition-all duration-300 ease-out hover:-translate-y-2 hover:border-[#00b0ff]/40 hover:shadow-[0_22px_50px_rgba(20,47,126,0.14)] sm:min-h-[370px] sm:py-16"
+            >
+              {/* Top Accent Gradient Border */}
+              <div className="absolute inset-x-0 top-0 h-1.5 w-full bg-gradient-to-r from-transparent via-[#00b0ff] to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+
+              {/* Ambient Glow Orbs in Corners */}
+              <div className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-[#00b0ff]/5 blur-3xl transition-all duration-500 group-hover:scale-150 group-hover:bg-[#00b0ff]/12" />
+              <div className="pointer-events-none absolute -bottom-16 -left-16 h-48 w-48 rounded-full bg-[#eed900]/5 blur-3xl transition-all duration-500 group-hover:scale-150 group-hover:bg-[#eed900]/12" />
+
+              {/* Icon Badge */}
+              <div className="relative z-10 flex h-20 w-20 items-center justify-center rounded-2xl border border-[#dceaff] bg-gradient-to-br from-[#f0f7ff] to-[#e4f2ff] text-[#183059] shadow-[0_2px_10px_rgba(20,47,126,0.04)] transition-all duration-300 group-hover:scale-110 group-hover:border-[#183059] group-hover:bg-[#183059] group-hover:text-[#eed900] group-hover:shadow-[0_8px_24px_rgba(24,48,89,0.25)] sm:h-24 sm:w-24 sm:rounded-3xl">
+                <service.Icon className="h-10 w-10 transition-transform duration-300 sm:h-11 sm:w-11" strokeWidth={2} aria-hidden="true" />
+              </div>
+
+              {/* Title */}
+              <h3 className="relative z-10 mt-7 font-['Rubik',sans-serif] text-[26px] font-normal leading-snug text-[#293039] transition-colors duration-300 group-hover:text-[#183059] sm:mt-8 sm:text-[32px]">
+                {service.title}
+              </h3>
+
+              {/* Circular Action Arrow Button */}
+              <div className="relative z-10 mt-7 inline-flex h-11 w-11 items-center justify-center rounded-full bg-[#f4f8fc] text-[#183059] transition-all duration-300 group-hover:bg-[#183059] group-hover:text-[#eed900] group-hover:translate-x-1 group-hover:shadow-md">
+                <ArrowRight className="h-5 w-5" strokeWidth={2} />
+              </div>
             </Link>
           ))}
         </div>
