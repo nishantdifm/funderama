@@ -4,42 +4,42 @@ export const searchableItems = [
   {
     title: "ALL YOU NEED TO KNOW ABOUT SBA 7(a) Loan",
     link: "/blog/all-you-need-to-know-about-sba-7a-loan",
-    image: "/images/customer-centric-lending-solutions.jpeg",
+    image: "https://funderama-llc.s3-eu-central-2.ionoscloud.com/customer-centric-lending-solutions.jpeg",
     desc: "ALL YOU NEED TO KNOW ABOUT SBA 7(a) Loan The SBA 7(A) is one of a few loaning programs the U.S. Small Business Administration offers to support mother and pop organizations gain admittance to capital. As opposed to loaning to business people legitimately, the SBA goes about as an underwriter on a controlled credit through business banks…",
     content: "The SBA 7(A) is one of a few loaning programs the U.S. Small Business Administration offers to support mother and pop organizations gain admittance to capital. SBA 7(a) loan mitigates risk, interest rates, eligibility, loan amounts up to $2 million, working capital, debt refinancing."
   },
   {
     title: "ALL YOU NEED TO KNOW ABOUT SBA LOANS",
     link: "/blog/all-you-need-to-know-about-sba-loans",
-    image: "/images/big-business-starts-small.jpeg",
+    image: "https://funderama-llc.s3-eu-central-2.ionoscloud.com/big-business-starts-small.jpeg",
     desc: "ALL YOU NEED TO KNOW ABOUT SBA LOANS SBA The Small Business Administration (SBA) Is an expansion of the US government whose principal reason for existing is to help business people through different programs. The most engaging and notable program of the SBA is its loan program, intended to assist with raising capital for…",
     content: "Small Business Administration SBA loans government-sponsored loans 7(a), CDC/504 term loans, Microloans, disaster loans, personal credit score, collateral, net worth, requirements, personal financial statement form 413."
   },
   {
     title: "DOES MY BUSINESS QUALIFY FOR MCA?",
     link: "/blog/does-my-business-qualify-for-mca",
-    image: "/images/mca-advanced-explained.png",
+    image: "https://funderama-llc.s3-eu-central-2.ionoscloud.com/mca-advanced-explained.png",
     desc: "Credit: www.become.com DOES MY BUSINESS QUALIFY FOR MCA? There are organizations that are not qualified for a bank advance – either those are excessively little or basically don't satisfy the required terms. What's more, what at that point, where to discover capital at this point? Fortunately, there is a possibility for those private companies too…",
     content: "Merchant Cash Advance MCA credit card sales factor rate holdback rate fast working capital unexpected operational expenses small business financing alternative funding Funderama."
   },
   {
     title: "PAYCHECK PROTECTION PROGRAM",
     link: "/blog/paycheck-protection-program",
-    image: "/images/free-consultation.jpeg",
+    image: "https://funderama-llc.s3-eu-central-2.ionoscloud.com/free-consultation.jpeg",
     desc: "PAYCHECK PROTECTION PROGRAM CARES ACT The Coronavirus Aid, Relief, and Economic Security Act, also called the CARES Act, is a $2.2 trillion monetary boost bill passed by the 116th U.S. Congress and marked into law by President Donald Trump in March 2020 in light of the monetary fallout of the COVID-19 pandemic in the United States…",
     content: "Paycheck Protection Program PPP CARES Act small business loans SBA 100% government guarantee payroll costs forgiveness application procedure."
   },
   {
     title: "SMALL BUSINESS ADMINISTRATION",
     link: "/blog/small-business-administration",
-    image: "/images/sba-loans.jpeg",
+    image: "https://funderama-llc.s3-eu-central-2.ionoscloud.com/sba-loans.jpeg",
     desc: "SMALL BUSINESS ADMINISTRATION Since 1953, the SBA has attempted to touch off change and flash activity so small business can unquestionably begin, develop, grow, or recover. Made in 1953, the U.S. Small Business Administration (SBA) keeps on helping entrepreneurs and small business seek after the American dream…",
     content: "Small Business Administration SBA 7(a) flagship loan up to $5 million, 504 loan for land machinery facilities, microloans up to $50,000, disaster loans, SBA guarantee."
   },
   {
     title: "What is MCA",
     link: "/blog/what-is-mca",
-    image: "/images/quick-financing.jpeg",
+    image: "https://funderama-llc.s3-eu-central-2.ionoscloud.com/quick-financing.jpeg",
     desc: "MERCHANT CASH ADVANCE A merchant cash advance (MCA) was initially organized as a singular amount installment to a business in return for an endless supply of future Mastercard and additionally charge card deals. The term is currently usually used to depict an assortment of independent company financing choices…",
     content: "Merchant Cash Advance MCA how it works debit and credit card sales factor rate holdback rate advantages seasonal businesses process applying approval Funderama."
   },

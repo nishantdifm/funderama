@@ -13,7 +13,7 @@ function SBALoansBanner() {
       {/* Background SVG overlay */}
       <div
         className="pointer-events-none absolute inset-0 z-0 bg-cover bg-center opacity-60 mix-blend-overlay"
-        style={{ backgroundImage: `url('/images/blob-scene-wide-simple.svg')` }}
+        style={{ backgroundImage: `url('https://funderama-llc.s3-eu-central-2.ionoscloud.com/blob-scene-wide-simple.svg')` }}
       />
 
       <div className="relative z-10 mx-auto flex w-[calc(100%-30px)] max-w-[1304px] flex-col justify-between py-12 sm:w-[calc(100%-48px)] sm:flex-row sm:items-center sm:py-[55px]">
@@ -59,13 +59,13 @@ function SBALoansHero() {
           <div className="relative h-[280px] w-[280px] sm:h-[380px] sm:w-[380px] md:h-[420px] md:w-[420px] lg:h-[540px] lg:w-[540px]">
             {/* Light blue background blob (top-right) */}
             <img
-              src="/images/sqr031-col1.svg"
+              src="https://funderama-llc.s3-eu-central-2.ionoscloud.com/sqr031-col1.svg"
               alt=""
               className="pointer-events-none absolute inset-0 z-[1] h-full w-full origin-center opacity-30 [transform:translate(14%,-14%)_scale(0.68)] lg:[transform:translate(18%,-18%)_scale(0.85)]"
             />
             {/* Clipped photo */}
             <img
-              src="/images/sba-loans.jpeg"
+              src="https://funderama-llc.s3-eu-central-2.ionoscloud.com/sba-loans.jpeg"
               alt="SBA Loans exchange"
               className="absolute inset-0 z-[2] h-full w-full object-cover"
               style={{
@@ -81,7 +81,7 @@ function SBALoansHero() {
             />
             {/* Dark slate-blue accent blob (bottom-left) */}
             <img
-              src="/images/shape-3.svg"
+              src="https://funderama-llc.s3-eu-central-2.ionoscloud.com/shape-3.svg"
               alt=""
               className="pointer-events-none absolute inset-0 z-[3] h-full w-full origin-center opacity-55 [transform:translate(-32%,32%)_scale(0.25)] lg:[transform:translate(-30%,26%)_scale(0.36)]"
             />
@@ -89,7 +89,7 @@ function SBALoansHero() {
         </div>
 
         {/* Right Column: Heading & Content */}
-        <div className="max-w-[580px]">
+        <div className="w-full lg:max-w-[580px]">
           <h2 className="mb-6 font-['Rubik',sans-serif] text-[30px] font-normal leading-[1.3] text-[#183059] sm:text-[36px]">
             SBA Loans
           </h2>
@@ -202,27 +202,32 @@ function ContactSectionSBA() {
     <section id="contact" className="bg-white px-4 pb-20 pt-10 sm:px-6 sm:pb-28 sm:pt-16">
       <div className="mx-auto max-w-[1304px]">
         {/* Contact Info Cards */}
-        <div className="mb-14 grid grid-cols-1 gap-6 sm:grid-cols-3 sm:gap-8">
+        <div className="mb-14 grid grid-cols-1 gap-6 sm:grid-cols-3 sm:gap-4 md:gap-6 lg:gap-8">
           {/* Card 1: Address */}
-          <div className="group flex flex-col items-center justify-center rounded-[12px] border border-[#eaedf1] bg-white p-7 text-center shadow-[0_4px_20px_rgba(20,47,126,0.05)] transition-all duration-300 ease-in-out hover:-translate-y-2 hover:border-[#00b0ff]/40 hover:shadow-[0_20px_40px_rgba(20,47,126,0.12)] sm:p-8">
+          <a
+            href={globalInfo.mapUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="group flex cursor-pointer flex-col items-center justify-center rounded-[12px] border border-[#eaedf1] bg-white p-7 text-center no-underline shadow-[0_4px_20px_rgba(20,47,126,0.05)] transition-all duration-300 ease-in-out hover:-translate-y-2 hover:border-[#00b0ff]/40 hover:shadow-[0_20px_40px_rgba(20,47,126,0.12)] sm:px-3 sm:py-7 md:px-4 md:py-8 lg:p-8"
+          >
             <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-[#f4f8fc] text-[#183059] transition-all duration-300 group-hover:scale-110 group-hover:bg-[#183059] group-hover:text-[#eed900]">
               <MapPin className="h-6 w-6 stroke-current" strokeWidth={1.7} />
             </div>
-            <h4 className="font-['Rubik',sans-serif] text-[18px] font-medium leading-snug text-[#183059] transition-colors group-hover:text-[#00b0ff] sm:text-[20px]">
+            <h4 className="font-['Rubik',sans-serif] text-[18px] font-medium leading-snug text-[#183059] transition-colors group-hover:text-[#00b0ff] sm:text-[15px] md:text-[16px] lg:text-[20px]">
               Corporate Office
             </h4>
             <span className="mt-1 text-sm font-normal text-[#7a8a99]">New York, NY</span>
-          </div>
+          </a>
 
           {/* Card 2: Email */}
           <a
             href={`mailto:${globalInfo.emailApply}`}
-            className="group flex cursor-pointer flex-col items-center justify-center rounded-[12px] border border-[#eaedf1] bg-white p-7 text-center no-underline shadow-[0_4px_20px_rgba(20,47,126,0.05)] transition-all duration-300 ease-in-out hover:-translate-y-2 hover:border-[#00b0ff]/40 hover:shadow-[0_20px_40px_rgba(20,47,126,0.12)] sm:p-8"
+            className="group flex cursor-pointer flex-col items-center justify-center rounded-[12px] border border-[#eaedf1] bg-white p-7 text-center no-underline shadow-[0_4px_20px_rgba(20,47,126,0.05)] transition-all duration-300 ease-in-out hover:-translate-y-2 hover:border-[#00b0ff]/40 hover:shadow-[0_20px_40px_rgba(20,47,126,0.12)] sm:px-3 sm:py-7 md:px-4 md:py-8 lg:p-8"
           >
             <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-[#f4f8fc] text-[#183059] transition-all duration-300 group-hover:scale-110 group-hover:bg-[#183059] group-hover:text-[#eed900]">
               <Mail className="h-6 w-6 stroke-current" strokeWidth={1.7} />
             </div>
-            <h4 className="font-['Rubik',sans-serif] text-[18px] font-medium leading-snug text-[#183059] transition-colors group-hover:text-[#00b0ff] sm:text-[20px]">
+            <h4 className="w-full max-w-full font-['Rubik',sans-serif] text-[18px] font-medium leading-snug text-[#183059] transition-colors group-hover:text-[#00b0ff] sm:text-[14px] md:text-[15px] lg:text-[20px]">
               {globalInfo.emailApply}
             </h4>
             <span className="mt-1 text-sm font-normal text-[#7a8a99]">Drop us a line</span>
@@ -231,12 +236,12 @@ function ContactSectionSBA() {
           {/* Card 3: Phone */}
           <a
             href={`tel:${globalInfo.phoneRaw}`}
-            className="group flex cursor-pointer flex-col items-center justify-center rounded-[12px] border border-[#eaedf1] bg-white p-7 text-center no-underline shadow-[0_4px_20px_rgba(20,47,126,0.05)] transition-all duration-300 ease-in-out hover:-translate-y-2 hover:border-[#00b0ff]/40 hover:shadow-[0_20px_40px_rgba(20,47,126,0.12)] sm:p-8"
+            className="group flex cursor-pointer flex-col items-center justify-center rounded-[12px] border border-[#eaedf1] bg-white p-7 text-center no-underline shadow-[0_4px_20px_rgba(20,47,126,0.05)] transition-all duration-300 ease-in-out hover:-translate-y-2 hover:border-[#00b0ff]/40 hover:shadow-[0_20px_40px_rgba(20,47,126,0.12)] sm:px-3 sm:py-7 md:px-4 md:py-8 lg:p-8"
           >
             <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-[#f4f8fc] text-[#183059] transition-all duration-300 group-hover:scale-110 group-hover:bg-[#183059] group-hover:text-[#eed900]">
               <Phone className="h-6 w-6 stroke-current" strokeWidth={1.7} />
             </div>
-            <h4 className="font-['Rubik',sans-serif] text-[18px] font-medium leading-snug text-[#183059] transition-colors group-hover:text-[#00b0ff] sm:text-[20px]">
+            <h4 className="font-['Rubik',sans-serif] text-[18px] font-medium leading-snug text-[#183059] transition-colors group-hover:text-[#00b0ff] sm:text-[15px] md:text-[16px] lg:text-[20px]">
               {globalInfo.phone}
             </h4>
             <span className="mt-1 text-sm font-normal text-[#7a8a99]">Have any questions?</span>

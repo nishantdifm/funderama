@@ -15,7 +15,7 @@ function ContactBanner() {
       {/* Background SVG overlay */}
       <div
         className="pointer-events-none absolute inset-0 z-0 bg-cover bg-center opacity-60 mix-blend-overlay"
-        style={{ backgroundImage: "url('/images/blob-scene-wide-simple.svg')" }}
+        style={{ backgroundImage: "url('https://funderama-llc.s3-eu-central-2.ionoscloud.com/blob-scene-wide-simple.svg')" }}
       />
 
       <div className="relative z-10 mx-auto flex w-[calc(100%-30px)] max-w-[1304px] flex-col justify-between py-12 sm:w-[calc(100%-48px)] sm:flex-row sm:items-center sm:py-[55px]">
@@ -56,9 +56,9 @@ function ContactCards() {
   return (
     <section className="bg-white pt-12 pb-10 sm:pt-16 sm:pb-14">
       <div className="mx-auto w-[calc(100%-30px)] max-w-[1304px] sm:w-[calc(100%-48px)]">
-        <div className="grid grid-cols-1 gap-8 sm:grid-cols-3">
+        <div className="grid grid-cols-1 gap-8 sm:grid-cols-3 sm:gap-4 md:gap-6 lg:gap-8">
           {/* Card 1: Phone */}
-          <div className="group flex flex-col items-center justify-center rounded-[12px] border border-[#eaedf1] bg-white p-8 sm:p-10 text-center shadow-[0_4px_20px_rgba(20,47,126,0.06)] transition-all duration-300 ease-in-out hover:-translate-y-2 hover:border-[#cbd5e1] hover:shadow-[0_20px_40px_rgba(20,47,126,0.14)]">
+          <div className="group flex flex-col items-center justify-center rounded-[12px] border border-[#eaedf1] bg-white p-8 text-center shadow-[0_4px_20px_rgba(20,47,126,0.06)] transition-all duration-300 ease-in-out hover:-translate-y-2 hover:border-[#cbd5e1] hover:shadow-[0_20px_40px_rgba(20,47,126,0.14)] sm:px-3 sm:py-7 md:px-4 md:py-8 lg:p-8 xl:p-10">
             <a
               href={`tel:${globalInfo.phoneRaw}`}
               className="mb-5 inline-flex h-16 w-16 items-center justify-center rounded-full bg-[#f4f8fc] text-[#183059] transition-all duration-300 group-hover:scale-110 group-hover:bg-[#183059] group-hover:text-[#F9E721]"
@@ -66,10 +66,10 @@ function ContactCards() {
             >
               <Phone className="h-7 w-7 stroke-current" strokeWidth={1.6} />
             </a>
-            <h4 className="font-['Rubik',sans-serif] text-[20px] sm:text-[22px] font-normal leading-tight text-[#183059]">
+            <h4 className="font-['Rubik',sans-serif] text-[20px] font-normal leading-tight text-[#183059] sm:text-[15px] md:text-[16px] lg:text-[20px] xl:text-[22px]">
               <a
                 href={`tel:${globalInfo.phoneRaw}`}
-                className="text-[#183059] no-underline transition-colors hover:text-[#00b0ff]"
+                className="whitespace-nowrap text-[#183059] no-underline transition-colors hover:text-[#00b0ff]"
               >
                 {globalInfo.phone}
               </a>
@@ -80,7 +80,7 @@ function ContactCards() {
           </div>
 
           {/* Card 2: Email */}
-          <div className="group flex flex-col items-center justify-center rounded-[12px] border border-[#eaedf1] bg-white p-8 sm:p-10 text-center shadow-[0_4px_20px_rgba(20,47,126,0.06)] transition-all duration-300 ease-in-out hover:-translate-y-2 hover:border-[#cbd5e1] hover:shadow-[0_20px_40px_rgba(20,47,126,0.14)]">
+          <div className="group flex flex-col items-center justify-center rounded-[12px] border border-[#eaedf1] bg-white p-8 text-center shadow-[0_4px_20px_rgba(20,47,126,0.06)] transition-all duration-300 ease-in-out hover:-translate-y-2 hover:border-[#cbd5e1] hover:shadow-[0_20px_40px_rgba(20,47,126,0.14)] sm:px-3 sm:py-7 md:px-4 md:py-8 lg:p-8 xl:p-10">
             <a
               href={`mailto:${globalInfo.emailApply}`}
               className="mb-5 inline-flex h-16 w-16 items-center justify-center rounded-full bg-[#f4f8fc] text-[#183059] transition-all duration-300 group-hover:scale-110 group-hover:bg-[#183059] group-hover:text-[#F9E721]"
@@ -88,7 +88,7 @@ function ContactCards() {
             >
               <Mail className="h-7 w-7 stroke-current" strokeWidth={1.6} />
             </a>
-            <h4 className="font-['Rubik',sans-serif] text-[18px] sm:text-[20px] font-normal leading-tight text-[#183059]">
+            <h4 className="w-full max-w-full font-['Rubik',sans-serif] text-[18px] font-normal leading-tight text-[#183059] sm:text-[13.5px] md:text-[15px] lg:text-[18px] xl:text-[20px]">
               <a
                 href={`mailto:${globalInfo.emailApply}`}
                 className="text-[#183059] no-underline transition-colors hover:text-[#00b0ff]"
@@ -102,11 +102,16 @@ function ContactCards() {
           </div>
 
           {/* Card 3: Address */}
-          <div className="group flex flex-col items-center justify-center rounded-[12px] border border-[#eaedf1] bg-white p-8 sm:p-10 text-center shadow-[0_4px_20px_rgba(20,47,126,0.06)] transition-all duration-300 ease-in-out hover:-translate-y-2 hover:border-[#cbd5e1] hover:shadow-[0_20px_40px_rgba(20,47,126,0.14)]">
+          <a
+            href={globalInfo.mapUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="group flex cursor-pointer flex-col items-center justify-center rounded-[12px] border border-[#eaedf1] bg-white p-8 text-center no-underline shadow-[0_4px_20px_rgba(20,47,126,0.06)] transition-all duration-300 ease-in-out hover:-translate-y-2 hover:border-[#cbd5e1] hover:shadow-[0_20px_40px_rgba(20,47,126,0.14)] sm:px-3 sm:py-7 md:px-4 md:py-8 lg:p-8 xl:p-10"
+          >
             <div className="mb-5 inline-flex h-16 w-16 items-center justify-center rounded-full bg-[#f4f8fc] text-[#183059] transition-all duration-300 group-hover:scale-110 group-hover:bg-[#183059] group-hover:text-[#F9E721]">
               <MapPin className="h-7 w-7 stroke-current" strokeWidth={1.6} />
             </div>
-            <h4 className="max-w-[320px] font-['Rubik',sans-serif] text-[15px] sm:text-[16px] font-normal uppercase leading-[1.5] text-[#183059]">
+            <h4 className="max-w-[320px] font-['Rubik',sans-serif] text-[15px] font-normal uppercase leading-[1.5] text-[#183059] transition-colors group-hover:text-[#00b0ff] sm:text-[13.5px] md:text-[14px] lg:text-[16px]">
               {globalInfo.address.line1}
               <br />
               {globalInfo.address.line2}
@@ -114,7 +119,7 @@ function ContactCards() {
             <div className="mt-2.5 font-['Inter',sans-serif] text-[14px] text-[#8ba2b5]">
               Office location
             </div>
-          </div>
+          </a>
         </div>
       </div>
     </section>

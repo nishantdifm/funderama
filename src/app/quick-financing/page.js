@@ -40,7 +40,7 @@ function QuickFinancingHero() {
         {/* Background SVG overlay */}
         <div
           className="pointer-events-none absolute inset-0 z-0 bg-cover bg-center opacity-60 mix-blend-overlay"
-          style={{ backgroundImage: `url('/images/blob-scene-wide-simple.svg')` }}
+          style={{ backgroundImage: `url('https://funderama-llc.s3-eu-central-2.ionoscloud.com/blob-scene-wide-simple.svg')` }}
         />
 
         <div className="relative z-10 mx-auto flex w-[calc(100%-30px)] max-w-[1304px] flex-col justify-between py-12 sm:w-[calc(100%-48px)] sm:flex-row sm:items-center sm:py-[55px]">
@@ -138,7 +138,7 @@ function QuickFinancingInfo() {
     <section className="bg-white px-4 pb-20 pt-4 sm:px-6 sm:pb-28 sm:pt-6">
       <div className="mx-auto grid max-w-[1304px] grid-cols-1 items-center gap-10 lg:grid-cols-2 lg:gap-14 xl:gap-20">
         {/* Left Column: Heading + Paragraphs */}
-        <div className="order-2 max-w-[580px] lg:order-1">
+        <div className="order-2 w-full lg:order-1 lg:max-w-[580px]">
           <h2 className="mb-[30px] font-['Rubik',sans-serif] text-[30px] font-normal leading-[1.3] text-[#183059] sm:text-[36px]">
             Quick Financing
           </h2>
@@ -166,13 +166,13 @@ function QuickFinancingInfo() {
           <div className="relative h-[280px] w-[280px] sm:h-[380px] sm:w-[380px] md:h-[420px] md:w-[420px] lg:h-[540px] lg:w-[540px]">
             {/* Light blue background blob (top-right) */}
             <img
-              src="/images/sqr031-col1.svg"
+              src="https://funderama-llc.s3-eu-central-2.ionoscloud.com/sqr031-col1.svg"
               alt=""
               className="pointer-events-none absolute inset-0 z-[1] h-full w-full origin-center opacity-30 [transform:translate(14%,-14%)_scale(0.68)] lg:[transform:translate(18%,-18%)_scale(0.85)]"
             />
             {/* Clipped photo */}
             <img
-              src="/images/quick-financing.jpeg"
+              src="https://funderama-llc.s3-eu-central-2.ionoscloud.com/quick-financing.jpeg"
               alt="Quick Financing cash exchange"
               className="absolute inset-0 z-[2] h-full w-full object-cover"
               style={{
@@ -188,7 +188,7 @@ function QuickFinancingInfo() {
             />
             {/* Dark slate-blue accent blob (bottom-left) */}
             <img
-              src="/images/shape-3.svg"
+              src="https://funderama-llc.s3-eu-central-2.ionoscloud.com/shape-3.svg"
               alt=""
               className="pointer-events-none absolute inset-0 z-[3] h-full w-full origin-center opacity-55 [transform:translate(-32%,32%)_scale(0.25)] lg:[transform:translate(-30%,26%)_scale(0.36)]"
             />
@@ -257,13 +257,13 @@ function ConsultationSection() {
           <div className="relative h-[280px] w-[280px] sm:h-[380px] sm:w-[380px] md:h-[420px] md:w-[420px] lg:h-[560px] lg:w-[560px]">
             {/* Light blue background blob (top-right) */}
             <img
-              src="/images/sqr031-col1.svg"
+              src="https://funderama-llc.s3-eu-central-2.ionoscloud.com/sqr031-col1.svg"
               alt=""
               className="pointer-events-none absolute inset-0 z-[1] h-full w-full origin-center opacity-30 [transform:translate(14%,-14%)_scale(0.68)] lg:[transform:translate(18%,-18%)_scale(0.85)]"
             />
             {/* Clipped photo */}
             <img
-              src="/images/free-consultation.jpeg"
+              src="https://funderama-llc.s3-eu-central-2.ionoscloud.com/free-consultation.jpeg"
               alt="Financial consultation"
               className="absolute inset-0 z-[2] h-full w-full object-cover"
               style={{
@@ -279,7 +279,7 @@ function ConsultationSection() {
             />
             {/* Dark slate-blue accent blob (bottom-left) */}
             <img
-              src="/images/shape-3.svg"
+              src="https://funderama-llc.s3-eu-central-2.ionoscloud.com/shape-3.svg"
               alt=""
               className="pointer-events-none absolute inset-0 z-[3] h-full w-full origin-center opacity-55 [transform:translate(-32%,32%)_scale(0.25)] lg:[transform:translate(-30%,26%)_scale(0.36)]"
             />
@@ -287,11 +287,11 @@ function ConsultationSection() {
         </div>
 
         {/* Right Column: Heading & Form */}
-        <div className="w-full lg:pl-8 xl:pl-10">
-          <h2 className="font-['Rubik',sans-serif] text-[30px] font-normal leading-[1.3] text-[#183059] sm:text-[36px]">
+        <div className="mx-auto w-full max-w-[540px] lg:mx-0 lg:max-w-none lg:pl-8 xl:pl-10">
+          <h2 className="text-center font-['Rubik',sans-serif] text-[30px] font-normal leading-[1.3] text-[#183059] sm:text-[36px] lg:text-left">
             Get free consultation now!
           </h2>
-          <div className="mb-9 mt-4 h-[1.5px] w-[95px] bg-[#293039]/40" />
+          <div className="mx-auto mb-9 mt-4 h-[1.5px] w-[95px] bg-[#293039]/40 lg:mx-0" />
 
           {submitted ? (
             <div className="rounded-[8px] border border-green-200 bg-green-50 p-7 text-center transition-all duration-300">
