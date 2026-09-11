@@ -12,7 +12,7 @@ export default function NotFound() {
         {/* Background SVG overlay */}
         <div
           className="pointer-events-none absolute inset-0 z-0 bg-cover bg-center opacity-60 mix-blend-overlay"
-          style={{ backgroundImage: "url('/images/blob-scene-wide-simple.svg')" }}
+          style={{ backgroundImage: "url('https://funderama-llc.s3-eu-central-2.ionoscloud.com/blob-scene-wide-simple.svg')" }}
         />
 
         <div className="relative z-10 mx-auto px-4 text-center">

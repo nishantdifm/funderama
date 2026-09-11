@@ -8,10 +8,10 @@ import ReCaptcha from "@/components/Common/ReCaptcha";
 import { Banknote, BriefcaseBusiness, Phone } from "lucide-react";
 
 const assets = {
-  heroImage: "/images/customer-centric-lending-solutions.jpeg",
+  heroImage: "https://funderama-llc.s3-eu-central-2.ionoscloud.com/customer-centric-lending-solutions.jpeg",
   imageMask: "/images/sqr012-col1.svg",
-  blueShape: "/images/sqr012-col1.svg",
-  accentShape: "/images/shape-1.svg",
+  blueShape: "https://funderama-llc.s3-eu-central-2.ionoscloud.com/sqr012-col1.svg",
+  accentShape: "https://funderama-llc.s3-eu-central-2.ionoscloud.com/shape-1.svg",
 };
 
 const services = [
@@ -39,7 +39,7 @@ function HeroSection() {
     <section className="relative isolate min-h-[650px] overflow-hidden bg-[linear-gradient(160deg,#e4f7ff_0%,#e8f8ff_43.5%,white_43.6%)] sm:min-h-[736px]">
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_42%_70%_at_-7%_76%,#e2f6fe_0_50%,transparent_50.4%),linear-gradient(62deg,transparent_0_70%,rgba(209,241,252,.6)_70.1%)]" />
       <div className="mx-auto grid min-h-[650px] w-[calc(100%-30px)] max-w-[1304px] grid-cols-1 items-center gap-10 py-12 sm:min-h-[736px] sm:w-[calc(100%-48px)] sm:py-20 lg:grid-cols-[45%_55%] lg:gap-0 lg:py-0">
-        <div className="max-w-[580px] text-left">
+        <div className="w-full text-left lg:max-w-[580px]">
           <p className="mb-3 font-['Rubik',sans-serif] text-[22px] font-normal leading-[1.3] text-[#293039] sm:mb-4 sm:text-[32px]">
             welcome to FunderamaLLC
           </p>
@@ -103,7 +103,7 @@ function HeroSection() {
 
         {/* Desktop Original Hero Image */}
         <div className="relative hidden h-[675px] overflow-visible lg:block">
-          <img className="absolute left-0 top-0 z-[1] w-[1000px] origin-center opacity-25 [transform:translate(-20%,-11%)_scale(.6)]" src={assets.blueShape} alt="" />
+          <img className="absolute left-0 top-0 z-[1] w-[1000px] origin-center opacity-25 [transform:translate(-15%,-8%)_scale(.6)]" src={assets.blueShape} alt="" />
           <img className="absolute right-[-10px] top-[18px] z-[2] h-[680px] w-[680px] object-cover [transform:translateX(4%)_scale(.9)]" src={assets.heroImage} alt="Business owner holding a tablet" style={{ WebkitMaskImage: `url(${assets.imageMask})`, WebkitMaskPosition: "center", WebkitMaskRepeat: "no-repeat", WebkitMaskSize: "contain", maskImage: `url(${assets.imageMask})`, maskPosition: "center", maskRepeat: "no-repeat", maskSize: "contain" }} />
           <img className="absolute left-0 top-0 z-[3] w-[1000px] origin-center opacity-50 [transform:translate(33%,18%)_scale(.33)]" src={assets.accentShape} alt="" />
         </div>
@@ -131,10 +131,10 @@ function ServicesSection() {
 }
 
 const mottoAssets = {
-  image: "/images/big-business-starts-small.jpeg",
+  image: "https://funderama-llc.s3-eu-central-2.ionoscloud.com/big-business-starts-small.jpeg",
   imageMask: "/images/sqr021-col1.svg",
-  blueShape: "/images/sqr021-col1.svg",
-  accentShape: "/images/shape-2.svg",
+  blueShape: "https://funderama-llc.s3-eu-central-2.ionoscloud.com/sqr021-col1.svg",
+  accentShape: "https://funderama-llc.s3-eu-central-2.ionoscloud.com/shape-2.svg",
 };
 
 function MottoSection() {
@@ -198,10 +198,10 @@ function MottoSection() {
 }
 
 const contactAssets = {
-  image: "/images/free-consultation.jpeg",
+  image: "https://funderama-llc.s3-eu-central-2.ionoscloud.com/free-consultation.jpeg",
   imageMask: "/images/sqr031-col1.svg",
-  blueShape: "/images/sqr031-col1.svg",
-  accentShape: "/images/shape-3.svg",
+  blueShape: "https://funderama-llc.s3-eu-central-2.ionoscloud.com/sqr031-col1.svg",
+  accentShape: "https://funderama-llc.s3-eu-central-2.ionoscloud.com/shape-3.svg",
 };
 
 function ContactSection() {

@@ -95,7 +95,7 @@ function Logo({ onClick }) {
     >
       <img
         className="h-auto w-full object-contain"
-        src="/images/fundrama-logo.png"
+        src="https://funderama-llc.s3-eu-central-2.ionoscloud.com/fundrama-logo.png"
         alt="Funderama"
       />
     </Link>

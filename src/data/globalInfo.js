@@ -7,7 +7,9 @@ export const globalInfo = {
     line1: "19355 TURNBERRY WAY SUITE 27D AVENTURA,",
     line2: "FLORIDA 33180",
     full: "19355 TURNBERRY WAY SUITE 27D AVENTURA, FLORIDA 33180",
+    mapUrl: "https://maps.app.goo.gl/za3N76n3pLGZcE729",
   },
+  mapUrl: "https://maps.app.goo.gl/za3N76n3pLGZcE729",
 };
 
 export default globalInfo;

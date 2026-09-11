@@ -44,13 +44,13 @@ export default function Footer() {
       {/* Subtle Background Pattern Overlay */}
       <div
         className="pointer-events-none absolute inset-0 bg-cover bg-center opacity-10 mix-blend-multiply"
-        style={{ backgroundImage: "url(/images/blob-scene-wide-simple.svg)" }}
+        style={{ backgroundImage: "url(https://funderama-llc.s3-eu-central-2.ionoscloud.com/blob-scene-wide-simple.svg)" }}
       />
 
       <div className="relative mx-auto max-w-[1304px] px-4 pt-16 pb-8 sm:px-6 sm:pt-20">
         <div className="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-[40%_25%_35%] lg:gap-8">
           {/* Column 1: Logo & Social Icons */}
-          <div className="space-y-8">
+          <div className="space-y-8 sm:col-span-2 lg:col-span-1">
             <Link
               href="/"
               onClick={(e) => {
@@ -68,7 +68,7 @@ export default function Footer() {
               className="inline-block cursor-pointer"
             >
               <img
-                src="/images/fundrama-logo-white.png"
+                src="https://funderama-llc.s3-eu-central-2.ionoscloud.com/fundrama-logo-white.png"
                 alt="Funderama Logo"
                 className="h-auto w-[220px] object-contain sm:w-[240px]"
               />
@@ -219,13 +219,26 @@ export default function Footer() {
 
               {/* Address */}
               <div className="flex items-start gap-3.5">
-                <MapPin className="mt-1 h-5 w-5 shrink-0 text-[#eed900]" />
+                <a
+                  href={globalInfo.mapUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label="Google Maps Location"
+                  className="mt-1 flex shrink-0 text-[#eed900] transition hover:text-white"
+                >
+                  <MapPin className="h-5 w-5" />
+                </a>
                 <div>
-                  <p className="m-0 font-medium leading-snug text-white">
+                  <a
+                    href={globalInfo.mapUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="m-0 block font-medium leading-snug text-white no-underline transition hover:text-[#eed900]"
+                  >
                     {globalInfo.address.line1}
                     <br />
                     {globalInfo.address.line2}
-                  </p>
+                  </a>
                   <p className="m-0 mt-0.5 text-xs text-[#8ea5be]">office location</p>
                 </div>
               </div>
@@ -243,7 +256,7 @@ export default function Footer() {
           </p>
           <div className="flex items-center gap-6">
             <Link href="/privacy-policy" className="text-[#8ea5be] no-underline transition hover:text-white">
-              Terms &amp; conditions
+              Privacy Policy
             </Link>
             <Link href="/contact" className="text-[#8ea5be] no-underline transition hover:text-white">
               Contact us
